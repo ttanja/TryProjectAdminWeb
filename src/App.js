@@ -13,6 +13,7 @@ class SiderDemo extends React.Component {
     collapsed: false,
   };
 
+
   onCollapse = collapsed => {
     console.log(collapsed);
     this.setState({ collapsed });

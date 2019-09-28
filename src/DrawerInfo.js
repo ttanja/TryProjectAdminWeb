@@ -1,5 +1,10 @@
-import { Drawer, List, Avatar, Divider, Col, Row ,Icon} from 'antd';
-import React, { Component } from 'react'
+import { 
+  Drawer, 
+  Divider, 
+  Col, 
+  Icon,} from 'antd';
+import React from 'react'
+
 const pStyle = {
   fontSize: 16,
   color: 'rgba(0,0,0,0.85)',
@@ -30,8 +35,18 @@ const DescriptionItem = ({ title, content }) => (
   </div>
 );
 
-class DrawerPage extends React.Component {
-  state = { visible: false };
+class DrawerInfo extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+        visible: false
+    };
+  }
+
+  componentDidMount(){
+    console.log(this.props);
+    
+}
 
   showDrawer = () => {
     this.setState({
@@ -56,7 +71,7 @@ class DrawerPage extends React.Component {
           onClose={this.onClose}
           visible={this.state.visible}
         >
-          <p style={{ ...pStyle, marginBottom: 24 }}> Clothes Detail</p>
+          <p style={{ ...pStyle, marginBottom: 24 }}>Clothes Detail</p>
             <Col>
               <DescriptionItem title="Name Brand" content="VATANIKA" />
             </Col>
@@ -75,7 +90,6 @@ class DrawerPage extends React.Component {
             <Col>
               <DescriptionItem title="Shape" content="Hourglass" />
             </Col>
-
           <Divider />
         </Drawer>
       </div>
@@ -83,4 +97,4 @@ class DrawerPage extends React.Component {
   }
 }
 
-export default DrawerPage;
+export default DrawerInfo;

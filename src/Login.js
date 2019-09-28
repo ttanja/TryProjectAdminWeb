@@ -54,7 +54,7 @@ class Login extends React.Component {
                                     Forgot password
                                 </a>
                                 <br></br>
-                                <Button type="primary" htmlType="submit" className="login-form-button">
+                                <Button type="primary" className="login-form-button">
                                     Log in
                                 </Button>
                                 <br></br>
