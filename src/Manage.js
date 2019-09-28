@@ -1,15 +1,17 @@
-import { Layout, Menu, Breadcrumb, Icon, Modal, Button, Row, Col, Card, Popconfirm } from 'antd';
+import { Layout, Menu, Breadcrumb, Icon, Modal, Button, Row, Col, Card, Popconfirm,Drawer,List,Divider } from 'antd';
 import React, { Component } from 'react'
 import './App.css'
 import Logo from './logo.svg';
 import logo2 from './LOGO-BW.png'
 import imageClothes from './FW19-lookbook-2075x1500-15-686x948.jpg';
 import addpicture from './addpicture1.png';
-
+import DrawerPage from './DrawerInfo';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 const { Meta } = Card;
+
+const { Edit } = DrawerPage
 
 class Manage extends React.Component {
     state = {
@@ -41,6 +43,11 @@ class Manage extends React.Component {
             visible: false,
         });
     };
+
+    toggle = () =>{
+        console.log('toggle');
+        
+    }
 
     render() {
         return (
@@ -98,7 +105,7 @@ class Manage extends React.Component {
                                             />
                                         }
                                         actions={[
-                                            <Icon type="info-circle" key="setting"></Icon>,
+                                            <DrawerPage/>,
                                             <Icon type="edit" key="edit" />,
                                             <Popconfirm title="Are you sure？" okText="Yes" cancelText="No">
                                                 <Icon type="delete" key="ellipsis" />

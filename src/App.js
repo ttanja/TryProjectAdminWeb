@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import './App.css'
 import Logo from './logo.svg';
 import logo2 from './LOGO-BW.png'
+import DrawerEdit from './DrawerEdit';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
