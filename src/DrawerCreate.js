@@ -195,20 +195,17 @@ class DrawerEdit extends React.Component {
               })(
                 <Checkbox.Group style={{ width: "100%" }}>
                   <Row>
-                    <Col span={8}>
-                      <Checkbox value="A">A</Checkbox>
+                    <Col span={10}>
+                      <Checkbox value="A">Party</Checkbox>
                     </Col>
-                    <Col span={8}>
-                      <Checkbox value="B">B</Checkbox>
+                    <Col span={10}>
+                      <Checkbox value="B">Wedding</Checkbox>
                     </Col>
-                    <Col span={8}>
-                      <Checkbox value="C">C</Checkbox>
+                    <Col span={10}>
+                      <Checkbox value="C">Make Merit </Checkbox>
                     </Col>
-                    <Col span={8}>
-                      <Checkbox value="D">D</Checkbox>
-                    </Col>
-                    <Col span={8}>
-                      <Checkbox value="E">E</Checkbox>
+                    <Col span={10}>
+                      <Checkbox value="D">Funeral</Checkbox>
                     </Col>
                   </Row>
                 </Checkbox.Group>
@@ -221,20 +218,20 @@ class DrawerEdit extends React.Component {
               })(
                 <Checkbox.Group style={{ width: "100%" }}>
                   <Row>
-                    <Col span={8}>
-                      <Checkbox value="A">A</Checkbox>
+                    <Col span={10}>
+                      <Checkbox value="A">Beach</Checkbox>
                     </Col>
-                    <Col span={8}>
-                      <Checkbox value="B">B</Checkbox>
+                    <Col span={10}>
+                      <Checkbox value="B">Hotel</Checkbox>
                     </Col>
-                    <Col span={8}>
-                      <Checkbox value="C">C</Checkbox>
+                    <Col span={10}>
+                      <Checkbox value="C">Bar</Checkbox>
                     </Col>
-                    <Col span={8}>
-                      <Checkbox value="D">D</Checkbox>
+                    <Col span={10}>
+                      <Checkbox value="D">Resturant</Checkbox>
                     </Col>
-                    <Col span={8}>
-                      <Checkbox value="E">E</Checkbox>
+                    <Col span={10}>
+                      <Checkbox value="E">Temple</Checkbox>
                     </Col>
                   </Row>
                 </Checkbox.Group>
@@ -247,28 +244,28 @@ class DrawerEdit extends React.Component {
               })(
                 <Checkbox.Group style={{ width: "100%" }}>
                   <Row>
-                    <Col span={8}>
-                      <Checkbox value="A">A</Checkbox>
+                    <Col span={15}>
+                      <Checkbox value="A">Pear</Checkbox>
                     </Col>
-                    <Col span={8}>
-                      <Checkbox value="B">B</Checkbox>
+                    <Col span={15}>
+                      <Checkbox value="B">Hourglass</Checkbox>
                     </Col>
-                    <Col span={8}>
-                      <Checkbox value="C">C</Checkbox>
+                    <Col span={15}>
+                      <Checkbox value="C">Apple</Checkbox>
                     </Col>
-                    <Col span={8}>
-                      <Checkbox value="D">D</Checkbox>
+                    <Col span={15}>
+                      <Checkbox value="D">Oval</Checkbox>
                     </Col>
-                    <Col span={8}>
-                      <Checkbox value="E">E</Checkbox>
+                    <Col span={15}>
+                      <Checkbox value="E">Diamond</Checkbox>
                     </Col>
                   </Row>
                 </Checkbox.Group>
               )}
             </Form.Item>
             <Form.Item wrapperCol={{ span: 12, offset: 5 }}>
-              <Button type="primary" htmlType="submit">
-                Submit
+              <Button type="primary" htmlType="add">
+                Add
               </Button>
             </Form.Item>
           </Form>
