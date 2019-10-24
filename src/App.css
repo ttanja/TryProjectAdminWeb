@@ -57,39 +57,40 @@ imgItem {
 
 .header {
   text-align: center;
-  color: #282c34;
-  background-color: rgb(241, 241, 241);
+  /* color: #282c34; */
+  background-image: url(bglogin-new.png);
+  /* background-color: black; */
 }
 
 .row1 {
   height: 100px;
-  background-color: rgb(241, 241, 241);
+  background-color: black;
 }
 
 .row2 {
   height: 120px;
-  background-color: rgb(241, 241, 241);
+  background-color: black;
 }
 
 .row3 {
   height: 10px;
-  background-color: rgb(241, 241, 241);
+  background-color: black;
 }
 
 .row4 {
   height: 370px;
-  background-color: rgb(241, 241, 241);
+  background-color: black;
 }
 
 .row5 {
   height: 100px;
-  background-color: rgb(241, 241, 241);
+  background-color: black;
 }
 
 .login-box {
-  background-color: white;
+  background-color: rgb(233, 233, 233);
   border-radius: 20px;
-  box-shadow: 2px 5px 2px lightgray;
+  box-shadow: 2px 5px 2px rgb(15, 15, 15);
 }
 
 .usernameInput, .passwordInput {
@@ -114,13 +115,13 @@ imgItem {
 .login-form-button{
   padding-right: 130px;
   padding-left: 130px;
-  background-color: rebeccapurple;
-  border-color: rebeccapurple;
+  background-color: black;
+  border-color: black;
 }
 
 .login-form-button:hover{
-  background-color: palevioletred;
-  border-color: palevioletred;
+  background-color:  rgb(17, 17, 17);
+  border-color: rgb(17, 17, 17);
 }
 
 .register {
@@ -129,7 +130,7 @@ imgItem {
 }
 
 .login-form-forgot:hover, .register-link:hover {
-  color: rebeccapurple;
+  color: black;
 }
 
 .login-form-forgot, .register-link {
