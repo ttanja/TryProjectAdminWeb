@@ -1,19 +1,43 @@
 import React from 'react';
 import {GoogleLogin} from 'react-google-login';
+import axios from 'axios';
 
-const success = response => {
-    console.log(response) // eslint-disable-line
-  }
+
 
 
 class Index extends React.Component {
     
     state = {
-        collapsed: false,
+        user:{
+            brandName: " ",
+            brandGoogleId: " AAAAAAA ",
+            brandEmail: " ",
+        }
     }
     
     
     render() {
+
+        const success = response => {
+            console.log(response)
+            this.setState({
+                user:{
+                    brandName: " ",
+                    brandGoogleId: response.profileObj.googleId,
+                    brandEmail: response.profileObj.email,
+                }
+            })
+
+            axios.post('http://localhost:8000/checkAdminIsExist/', {
+                brandGoogleId: response.profileObj.googleId,
+            }).then(res => {
+                if(res.data.result){
+                    this.props.history.push('/main',{user: this.state.user})
+                }else{
+                    this.props.history.push('/register',{user: this.state.user})
+                }
+            })  
+        }
         
         return (
             <div>
@@ -26,7 +50,10 @@ class Index extends React.Component {
                     onSuccess={success}
                     cookiePolicy={'single_host_origin'}
                 />
+
+                <p>{this.state.user.brandGoogleId}</p>
             </div>
+
         );
     }
 
