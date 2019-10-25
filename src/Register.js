@@ -14,7 +14,11 @@ const success = response => {
     
 
 
+<<<<<<< HEAD
 class Login extends Component {
+=======
+class Login extends React.Component {
+>>>>>>> master
     
     state = {
         collapsed: false,
