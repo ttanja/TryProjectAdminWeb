@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
-import './Style/Login.css'
+import '../Style/Login.css'
 import axios from 'axios';
 import { GoogleLogin } from 'react-google-login';
-import logo from './picture/LOGO-new.png';
-import loginBg from './picture/bglogin-new.png';
-import googleLogo from './picture/google.png';
+import logo from '../picture/LOGO-new.png';
+import loginBg from '../picture/bglogin-new.png';
+import googleLogo from '../picture/google.png';
 
 
-class Index extends React.Component {
+class LoginPage extends React.Component {
 
   state = {
     user: {
@@ -70,4 +70,4 @@ class Index extends React.Component {
   }
 }
 
-export default Index;
+export default LoginPage;
