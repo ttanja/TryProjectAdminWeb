@@ -1,31 +1,24 @@
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 import React, { Component } from 'react'
-import '../App.css'
 import Logo from '../picture/logo.svg';
-import logo2 from '../picture/LOGO-BW.png'
+import logo2 from '../picture/LOGO-new.png'
+import '../Style/Main.css'
 import DrawerEdit from './DrawerEdit';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 class SiderDemo extends React.Component {
-  state = {
-    collapsed: false,
-  };
 
-
-  onCollapse = collapsed => {
-    console.log(collapsed);
-    this.setState({ collapsed });
-  };
 
   render() {
     return (
       <Layout style={{ minHeight: '100vh' }}>
-        <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
+        <Sider>
           <div className="logo">
-            <img src={logo2} alt="Logo" />
+            <img src={logo2} className="Logo" />
           </div>
+          
           <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
             <Menu.Item key="1">
               <Icon type="home" />
@@ -70,18 +63,7 @@ class SiderDemo extends React.Component {
           </Menu>
         </Sider>
         <Layout>
-          <Header style={{ background: '#fff', padding: 0 }} >
 
-          </Header>
-          <Content style={{ margin: '0 16px' }}>
-            <Breadcrumb style={{ margin: '16px 0' }}>
-              <Breadcrumb.Item>Home</Breadcrumb.Item>
-              {/* <Breadcrumb.Item>Bill</Breadcrumb.Item> */}
-            </Breadcrumb>
-            <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
-              test
-              </div>
-          </Content>
           {/* <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer> */}
         </Layout>
       </Layout>

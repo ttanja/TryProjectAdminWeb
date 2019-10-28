@@ -1,6 +1,5 @@
 import { Layout, Menu, Breadcrumb, Icon, Row, Col, Card, Popconfirm, Button} from 'antd';
 import React from 'react'
-import './App.css'
 import logo2 from './LOGO-BW.png'
 import imageClothes from './FW19-lookbook-2075x1500-15-686x948.jpg';
 import DrawerInfo from './DrawerInfo';

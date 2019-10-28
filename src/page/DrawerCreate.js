@@ -10,11 +10,13 @@ import {
   Checkbox,
   Col,
   Row,
+  Radio,
   Divider
 } from "antd";
-import addpicture from './addpicture1.png';
 import React from "react";
+import RestService from "../service/rest.service";
 
+const rest = new RestService();
 const { Option } = Select;
 
 const pStyle = {
@@ -43,12 +45,14 @@ function beforeUpload(file) {
   return isJpgOrPng && isLt2M;
 }
 
-class DrawerEdit extends React.Component {
+class DrawerCreate extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       visible: false,
-      loading: false
+      loading: false,
+      formData: null,
+      type: "UNISEX"
     };
   }
 
@@ -69,7 +73,7 @@ class DrawerEdit extends React.Component {
   };
 
   componentDidMount() {
-    console.log(this.props);
+    console.log("===============>", this.props);
   }
 
   showDrawer = () => {
@@ -82,6 +86,34 @@ class DrawerEdit extends React.Component {
     this.setState({
       visible: false
     });
+  };
+
+  renderShapType = () => {
+    if (this.state.type === "UNISEX") {
+      let men = this.props.formData.men;
+      let women = this.props.formData.women;
+      let unisex = men.concat(women);
+      return unisex.map((data, index) => (
+        <Col span={15} keys={index}>
+          <Checkbox value={data.shapeName}>{data.shapeName}</Checkbox>
+        </Col>
+      ));
+    }
+    if (this.state.type === "MAN") {
+      return this.props.formData.men.map((data, index) => (
+        <Col span={15} keys={index}>
+          <Checkbox value={data.shapeName}>{data.shapeName}</Checkbox>
+        </Col>
+      ));
+    }
+
+    if (this.state.type === "WOMAN") {
+      return this.props.formData.women.map((data, index) => (
+        <Col span={15} keys={index}>
+          <Checkbox value={data.shapeName}>{data.shapeName}</Checkbox>
+        </Col>
+      ));
+    }
   };
 
   handleChange = info => {
@@ -115,6 +147,13 @@ class DrawerEdit extends React.Component {
     });
   };
 
+  onChange = e => {
+    console.log("radio checked", e.target.value);
+    this.setState({
+      type: e.target.value
+    });
+  };
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -130,9 +169,9 @@ class DrawerEdit extends React.Component {
     const { imageUrl } = this.state;
     return (
       <div>
-        <div className="addPictureIcon" onClick={this.showDrawer}>
-          <img className="img-box" alt="Clothes" src={addpicture} />
-        </div>
+        <button className="AddClothes" onClick={this.showDrawer}>
+                            <div className="fontStyle">Add Clothes</div>
+                        </button>
         <Drawer
           width={640}
           placement="right"
@@ -195,18 +234,11 @@ class DrawerEdit extends React.Component {
               })(
                 <Checkbox.Group style={{ width: "100%" }}>
                   <Row>
-                    <Col span={10}>
-                      <Checkbox value="A">Party</Checkbox>
-                    </Col>
-                    <Col span={10}>
-                      <Checkbox value="B">Wedding</Checkbox>
-                    </Col>
-                    <Col span={10}>
-                      <Checkbox value="C">Make Merit </Checkbox>
-                    </Col>
-                    <Col span={10}>
-                      <Checkbox value="D">Funeral</Checkbox>
-                    </Col>
+                    {this.props.formData.events.map((data, index) => (
+                      <Col span={10} keys={index}>
+                        <Checkbox value={data.event}>{data.event}</Checkbox>
+                      </Col>
+                    ))}
                   </Row>
                 </Checkbox.Group>
               )}
@@ -218,48 +250,29 @@ class DrawerEdit extends React.Component {
               })(
                 <Checkbox.Group style={{ width: "100%" }}>
                   <Row>
-                    <Col span={10}>
-                      <Checkbox value="A">Beach</Checkbox>
-                    </Col>
-                    <Col span={10}>
-                      <Checkbox value="B">Hotel</Checkbox>
-                    </Col>
-                    <Col span={10}>
-                      <Checkbox value="C">Bar</Checkbox>
-                    </Col>
-                    <Col span={10}>
-                      <Checkbox value="D">Resturant</Checkbox>
-                    </Col>
-                    <Col span={10}>
-                      <Checkbox value="E">Temple</Checkbox>
-                    </Col>
+                    {this.props.formData.places.map((data, index) => (
+                      <Col span={10} keys={index}>
+                        <Checkbox value={data.place}>{data.place}</Checkbox>
+                      </Col>
+                    ))}
                   </Row>
                 </Checkbox.Group>
               )}
             </Form.Item>
             <Divider />
+            <Form.Item label="Gender:">
+              <Radio.Group onChange={this.onChange} value={this.state.type}>
+                <Radio value="UNISEX">UNISEX</Radio>
+                <Radio value="MAN">MAN</Radio>
+                <Radio value="WOMAN">WOMAN</Radio>
+              </Radio.Group>
+            </Form.Item>
             <Form.Item label="Shape">
               {getFieldDecorator("shape", {
                 initialValue: ["A", "B"]
               })(
                 <Checkbox.Group style={{ width: "100%" }}>
-                  <Row>
-                    <Col span={15}>
-                      <Checkbox value="A">Pear</Checkbox>
-                    </Col>
-                    <Col span={15}>
-                      <Checkbox value="B">Hourglass</Checkbox>
-                    </Col>
-                    <Col span={15}>
-                      <Checkbox value="C">Apple</Checkbox>
-                    </Col>
-                    <Col span={15}>
-                      <Checkbox value="D">Oval</Checkbox>
-                    </Col>
-                    <Col span={15}>
-                      <Checkbox value="E">Diamond</Checkbox>
-                    </Col>
-                  </Row>
+                  <Row>{this.renderShapType()}</Row>
                 </Checkbox.Group>
               )}
             </Form.Item>
@@ -275,4 +288,4 @@ class DrawerEdit extends React.Component {
   }
 }
 
-export default Form.create()(DrawerEdit);
+export default Form.create()(DrawerCreate);

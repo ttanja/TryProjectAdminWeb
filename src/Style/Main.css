@@ -1,0 +1,49 @@
+.logo{
+  display: flex;
+  justify-content: center;
+}
+.Logo{
+  
+  width: 200px;
+  height: 200px;
+}
+.SeparatorLine{
+    background-Color: #fff;
+    width: 150px;
+    height: 1px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+  }
+  .AddClothes{
+    background-Color: #B5B5B5;
+    border-Width: 1px;
+    border-Color: #fff;
+    height: 42px;
+    display: flex;
+    width: 230px;
+    border-Radius: 4px;
+    justify-content: center;
+    align-items: center;
+    margin-left: 12px;
+    
+  }
+  .Botton{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 20;
+  }
+  .fontStyle{
+    color: #fff;
+    font-size: 18px;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Roboto', sans-serif;
+    
+
+  }
+  .add-clothes{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }

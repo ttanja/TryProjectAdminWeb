@@ -1,21 +1,24 @@
-import { Layout, Menu, Breadcrumb, Icon, Row, Col, Card, Popconfirm, Button} from 'antd';
+import { Layout, Menu, Breadcrumb, Icon, Row, Col, Card, Popconfirm, Button } from 'antd';
 import React from 'react'
-import './App.css'
-import logo2 from '../picture/LOGO-BW.png'
+import logo2 from '../picture/LOGO-new.png'
 import imageClothes from '../picture/FW19-lookbook-2075x1500-15-686x948.jpg';
 import DrawerInfo from './DrawerInfo';
 import DrawerEdit from './DrawerEdit';
 import DrawerCreate from './DrawerCreate';
+import '../Style/Main.css'
+import '../Style/App.css'
+import RestService from '../service/rest.service'
 
 const { Content, Sider } = Layout;
 const { SubMenu } = Menu;
 const { Meta } = Card;
-
+const rest  = new RestService
 
 class Manage extends React.Component {
     state = {
         collapsed: false,
-        visible: false
+        visible: false,
+        formData: null
     };
 
     onCollapse = collapsed => {
@@ -43,66 +46,67 @@ class Manage extends React.Component {
         });
     };
 
-    toggle = () =>{
+    toggle = () => {
         console.log('toggle');
-        
+
     }
 
-    render() {
-        return (
-            <Layout style={{ minHeight: '100vh' }}>
-                <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
-                    <div className="logo">
-                        <img src={logo2} alt="Logo" />
-                    </div>
-                    <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-                        <Menu.Item key="1">
-                            <Icon type="home" />
-                            <span><a href="/">Home</a></span>
-                        </Menu.Item>
+    componentDidMount(){
+        this.getData()
+    }
 
-                        <SubMenu
-                            key="sub2"
-                            title={
-                                <span>
-                                    <Icon type="edit" />
-                                    <span>Manage</span>
-                                </span>
-                            }
-                        >
-                            <Menu.Item key="9">Top</Menu.Item>
-                            <Menu.Item key="10">Pants</Menu.Item>
-                            <Menu.Item key="11">Skirt</Menu.Item>
-                            <Menu.Item key="12">Jacket</Menu.Item>
-                            <Menu.Item key="13">Dress</Menu.Item>
-                            <Menu.Item key="14">Shoes</Menu.Item>
-                        </SubMenu>
-                        <Menu.Item key="15">
-                            <Icon type="logout" />
-                            <span><a href="/">logout</a></span>
+    getData = async () =>{
+        let getAllEvent = await rest.getAllEvent()
+        let getAllPlace = await rest.getAllPlace()
+        let womenShape = await rest.womenShape()
+        let menShape = await rest.menShape()
+        const formData = {
+            events : getAllEvent.data,
+            places : getAllPlace.data,
+            women : womenShape.data,
+            men : menShape.data
+        }
+        this.setState({
+          formData
+        })
+        console.log(this.state.formData);
+        
+      }
+
+    render() {
+        // console.log(this.state.events);
+        
+        return (
+            <Layout style={{display:'flex',flexDirection:"row"}}>
+                <div style={{width:"256px"}}>
+                    <Menu
+                        mode="inline"
+                        openKeys={this.state.openKeys}
+                        onOpenChange={this.onOpenChange}
+                        style={{ width: 256 ,minHeight: '100vh' }}
+                    >
+                         <div className="logo">
+                        <img src={logo2} className="Logo" />
+                    </div>
+                
+                    {this.state.formData !== null ? ( <DrawerCreate formData={this.state.formData}/>) : (<div></div>)} 
+
+                        <Menu.Item key="1">All Categories</Menu.Item>
+                        <Menu.Item key="2">Top</Menu.Item>
+                        <Menu.Item key="3">Pants</Menu.Item>
+                        <Menu.Item key="4">Skirt</Menu.Item>
+                        <Menu.Item key="5">Jacket</Menu.Item>
+                        <Menu.Item key="6">Dress</Menu.Item>
+                        <Menu.Item key="7">Shoes</Menu.Item>
+                        <Menu.Item key="8">
+                            <Icon type="logout" />Logout
                         </Menu.Item>
                     </Menu>
-                </Sider>
+                </div>
                 <Layout>
-                    <Content style={{ margin: '0 16px' }}>
-                        <Breadcrumb style={{ margin: '16px 0' }}>
-                            <Breadcrumb.Item>Home</Breadcrumb.Item>
-                            <Breadcrumb.Item>Manage</Breadcrumb.Item>
-                        </Breadcrumb>
-                        
+                    <Content>
                         <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
                             <Row gutter={16}>
-                            <Col className="gutter-row" span={6}>
-                                    <Card
-                                        style={{}}
-                                        cover={
-                                            <DrawerCreate/>
-                                            
-                                        }
-                                        >
-                                    </Card>
-                                    
-                                </Col>
                                 <Col className="gutter-row" span={6}>
                                     <Card
                                         style={{}}
@@ -115,7 +119,7 @@ class Manage extends React.Component {
                                         }
                                         actions={[
                                             <DrawerInfo />,
-                                            <DrawerEdit/>,
+                                            <DrawerEdit />,
                                             <Popconfirm title="Are you sure？" okText="Yes" cancelText="No">
                                                 <Icon type="delete" key="ellipsis" />
                                             </Popconfirm>
@@ -128,7 +132,7 @@ class Manage extends React.Component {
                                             description="CHECKED WOOL-BLEND AND CREPE OFF SHOULDER WIDE-LEG JUMPSUIT"
                                         />
                                     </Card>
-                                    
+
                                 </Col>
                             </Row>
 

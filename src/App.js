@@ -1,6 +1,5 @@
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 import React, { Component } from 'react'
-import './App.css'
 import Logo from './logo.svg';
 import logo2 from './LOGO-BW.png'
 import DrawerEdit from './DrawerEdit';
