@@ -3,11 +3,12 @@ import React from "react";
 import Login from '../page/Login';
 import Manage from '../page/Manage';
 import Main from '../page/Main';
+import testUploadImage from '../page/testUploadImage';
 
 
 export default () => (
     <Switch>
-      <Route exact path="/" component={Manage} />
+      <Route exact path="/" component={testUploadImage} />
       {/* <Route exact path="/main" component={Main} /> */}
     </Switch>
 )
