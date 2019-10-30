@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {storage} from '../Firebase/Index';
 
-class ImageUpload extends Component {
+class clothesUpload extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -62,4 +62,4 @@ class ImageUpload extends Component {
   }
 }
 
-export default ImageUpload;
+export default clothesUpload;
