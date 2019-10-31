@@ -15,17 +15,18 @@
     margin-left: 20px;
   }
   .AddClothes{
-    background-Color: #8c8c8c;
+    background-Color: rgb(71, 71, 71);
     border-Width: 1px;
-    border-Color: #fff;
+    border-Color: rgb(27, 27, 27);
     height: 42px;
     display: flex;
     width: 230px;
-    border-Radius: 4px;
+    border-Radius: 3px;
     justify-content: center;
     align-items: center;
     margin-left: 12px;
-    
+    padding-bottom: 9px;
+    margin-bottom: 20px;
   }
   .Botton{
     display: flex;
@@ -35,15 +36,51 @@
   }
   .fontStyle{
     color: #fff;
-    font-size: 18px;
+    font-size: 12px;
     justify-content: center;
     align-items: center;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
     
-
   }
   .add-clothes{
     width: 100%;
     display: flex;
     justify-content: center;
+  }
+
+  .ant-menu, ant-menu-light, ant-menu-root, ant-menu-inline{
+    background-color: black;
+  }
+  
+  .ant-menu-item{
+    color: #fff;
+  }
+  .ant-menu-item:hover{
+    text-decoration-line: underline;
+    color: #fff;
+  }
+
+  .ant-menu-item-selected{
+    color: rgb(0, 0, 0);
+    background-color: black;
+  }
+
+  .ant-menu-item-selected:hover, ant-menu-item-active{
+    color: black;
+    text-decoration-line: none;
+  }
+
+  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected{
+    background: rgb(255, 255, 255);
+    color: rgb(68, 68, 68); ;
+  }
+
+  .ant-menu-vertical .ant-menu-item::after, .ant-menu-vertical-left .ant-menu-item::after, .ant-menu-vertical-right .ant-menu-item::after, .ant-menu-inline .ant-menu-item::after {
+    border-right: 3px solid #fff;
+  }
+
+  .ant-breadcrumb{
+    padding-left: 50px;
+    padding-top: 30px;
   }

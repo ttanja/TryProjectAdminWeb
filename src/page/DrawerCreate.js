@@ -170,8 +170,8 @@ class DrawerCreate extends React.Component {
     return (
       <div>
         <button className="AddClothes" onClick={this.showDrawer}>
-                            <div className="fontStyle">Add Clothes</div>
-                        </button>
+          <div className="fontStyle">+ ADD CLOTHES</div>
+        </button>
         <Drawer
           width={640}
           placement="right"
@@ -209,8 +209,8 @@ class DrawerCreate extends React.Component {
                       style={{ width: "100%" }}
                     />
                   ) : (
-                    uploadButton
-                  )}
+                      uploadButton
+                    )}
                 </Upload>
               )}
             </Form.Item>

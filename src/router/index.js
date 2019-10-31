@@ -8,7 +8,7 @@ import testUploadImage from '../page/testUploadImage';
 
 export default () => (
     <Switch>
-      <Route exact path="/" component={testUploadImage} />
+      <Route exact path="/" component={Manage} />
       {/* <Route exact path="/main" component={Main} /> */}
     </Switch>
 )
