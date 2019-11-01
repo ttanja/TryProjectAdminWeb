@@ -133,9 +133,19 @@ class DrawerCreate extends React.Component {
   };
   handleSubmit = e => {
     e.preventDefault();
+    // console.log("Brandname : ",e.target.brandname.value);
+    // console.log("Description : ",e.target.description.value);
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log("Received values of form: ", values);
+        var brandname = values.brandofclothes;
+        var description = values.description;
+        var event = values.event;
+        var eventType = values["event-type"];
+        var shape = values.shape;
+
+        console.log("Brandname : ",brandname,"\nDescription : ",description,"\nEvent : ",event,
+        "\nEvent Type : ",eventType,"\nShape : ",shape);
       }
     });
   };
@@ -218,14 +228,14 @@ class DrawerCreate extends React.Component {
             <Form.Item label="Brand Name">
               {getFieldDecorator("brandofclothes", {
                 rules: [{ required: true, message: "Please input brand name!" }]
-              })(<Input />)}
+              })(<Input name="brandname"/>)}
             </Form.Item>
             <Form.Item label="Description">
               {getFieldDecorator("description", {
                 rules: [
                   { required: true, message: "Please input description!" }
                 ]
-              })(<Input />)}
+              })(<Input name="description"/>)}
             </Form.Item>
             <Divider />
             <Form.Item label="Event">
