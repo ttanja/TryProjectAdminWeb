@@ -34,6 +34,10 @@ class Register extends React.Component {
             <div>
                 <p>Input the brand name: <input type='text' onChange={this.handleChange.bind(this)}/></p>
                 <Button onClick={() => this.createBrand()}> Press Me !</Button>
+
+                <p>Input the brand name: <input type='text' onChange={this.handleChange.bind(this)}/></p>
+                <p>Input the brand name: <input type='text' onChange={this.handleChange.bind(this)}/></p>
+                <p>Input the brand name: <input type='text' onChange={this.handleChange.bind(this)}/></p>
                 <p>{this.state.brandName}</p>
             </div>
 
