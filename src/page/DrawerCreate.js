@@ -138,13 +138,14 @@ class DrawerCreate extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log("Received values of form: ", values);
-        var brandname = values.brandofclothes;
+        var brandName = values.brandofclothes;
         var description = values.description;
+        var link = values.link;
         var event = values.event;
         var eventType = values["event-type"];
         var shape = values.shape;
 
-        console.log("Brandname : ",brandname,"\nDescription : ",description,"\nEvent : ",event,
+        console.log("Brandname : ",brandName,"\nDescription : ",description,"\nEvent : ",event,
         "\nEvent Type : ",eventType,"\nShape : ",shape);
       }
     });

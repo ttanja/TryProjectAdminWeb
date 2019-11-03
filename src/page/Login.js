@@ -27,7 +27,6 @@ class LoginPage extends React.Component {
           brandGoogleId: response.profileObj.googleId,
           brandEmail: response.profileObj.email,
         }
-<<<<<<< Updated upstream:src/page/Login.js
       })
 
       axios.post('http://localhost:8000/checkAdminIsExist/', {
@@ -37,32 +36,6 @@ class LoginPage extends React.Component {
           this.props.history.push('/main', { user: this.state.user })
         } else {
           this.props.history.push('/register', { user: this.state.user })
-=======
-    }
-    
-    
-    render() {
-
-        const success = response => {
-            console.log(response)
-            this.setState({
-                user:{
-                    brandName: " ",
-                    brandGoogleId: response.profileObj.googleId,
-                    brandEmail: response.profileObj.email,
-                }
-            })
-
-            axios.post('http://3.92.192.76:8000/checkAdminIsExist/', {
-                brandGoogleId: response.profileObj.googleId,
-            }).then(res => {
-                if(res.data.result){
-                    this.props.history.push('/main',{user: this.state.user})
-                }else{
-                    this.props.history.push('/register',{user: this.state.user})
-                }
-            })  
->>>>>>> Stashed changes:src/page/Index.js
         }
       })
     }
