@@ -19,7 +19,13 @@ class LoginPage extends React.Component {
 
   render() {
 
+    const fail = response => {
+      console.log('fail')
+      console.log(response)
+    }
+
     const success = response => {
+      console.log('test')
       console.log(response)
       this.setState({
         user: {
@@ -29,7 +35,7 @@ class LoginPage extends React.Component {
         }
       })
 
-      axios.post('http://localhost:8000/checkAdminIsExist/', {
+      axios.post('http://3.92.192.76:8000/checkAdminIsExist/', {
         brandGoogleId: response.profileObj.googleId,
       }).then(res => {
         if (res.data.result) {
@@ -45,7 +51,7 @@ class LoginPage extends React.Component {
         <div className="logo-header"><img src={logo} className="logo-png"/></div>
         <div className="SeparatorLine"></div>
           <GoogleLogin
-            clientId="823575915718-5qtptev11khljqglhhe126a8vf65e40g.apps.googleusercontent.com"
+            clientId="823575915718-q03nd85afligp8r3n9g2694mll5ncqcp.apps.googleusercontent.com"
             render={renderProps => (
                 <button className="loginGoogle" onClick={renderProps.onClick} disabled={renderProps.disabled}>
                   <img src={googleLogo} className="googleLogo-png"/>
@@ -56,7 +62,7 @@ class LoginPage extends React.Component {
             )}
             buttonText="Login"
             onSuccess={success}
-            cookiePolicy={'single_host_origin'}
+            onFailure={fail}
           />
 
            {/* <p>{this.state.user.brandGoogleId}</p>  */}
