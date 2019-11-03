@@ -25,8 +25,7 @@ class LoginPage extends React.Component {
     }
 
     const success = response => {
-      console.log('test')
-      console.log(response)
+
       this.setState({
         user: {
           brandName: " ",
@@ -34,6 +33,7 @@ class LoginPage extends React.Component {
           brandEmail: response.profileObj.email,
         }
       })
+
 
       axios.post('http://3.92.192.76:8000/checkAdminIsExist/', {
         brandGoogleId: response.profileObj.googleId,
@@ -63,6 +63,7 @@ class LoginPage extends React.Component {
             buttonText="Login"
             onSuccess={success}
             onFailure={fail}
+            cookiePolicy={'single_host_origin'}
           />
 
            {/* <p>{this.state.user.brandGoogleId}</p>  */}

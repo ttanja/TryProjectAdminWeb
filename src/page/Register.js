@@ -5,21 +5,21 @@ import axios from 'axios';
 class Register extends React.Component {
     
     state = {
-        user: this.props.location.state,
+        user: this.props.location.state.user,
     }
 
     componentDidMount(){
-        console.log(this.state.user)
+        
     }
 
     createBrand(){
-        axios.post('http://localhost:8000/createBrand/', {
+        axios.post('http://3.92.192.76:8000/createBrand/', {
             brandName: this.state.brandName,
             brandGoogleId: this.state.user.brandGoogleId,
             brandEmail: this.state.user.brandEmail
         }).then(res => {
             console.log(res)
-            this.props.history.push('/register',{user: this.state.user})
+            //this.props.history.push('/register',{user: this.state.user})
         })
     }
 
@@ -34,10 +34,6 @@ class Register extends React.Component {
             <div>
                 <p>Input the brand name: <input type='text' onChange={this.handleChange.bind(this)}/></p>
                 <Button onClick={() => this.createBrand()}> Press Me !</Button>
-
-                <p>Input the brand name: <input type='text' onChange={this.handleChange.bind(this)}/></p>
-                <p>Input the brand name: <input type='text' onChange={this.handleChange.bind(this)}/></p>
-                <p>Input the brand name: <input type='text' onChange={this.handleChange.bind(this)}/></p>
                 <p>{this.state.brandName}</p>
             </div>
 
