@@ -15,6 +15,7 @@ import {
 } from "antd";
 import React from "react";
 import RestService from "../service/rest.service";
+import { storage } from "../Firebase/Index";
 
 const rest = new RestService();
 const { Option } = Select;
@@ -27,24 +28,6 @@ const pStyle = {
   marginBottom: 16
 };
 
-function getBase64(img, callback) {
-  const reader = new FileReader();
-  reader.addEventListener("load", () => callback(reader.result));
-  reader.readAsDataURL(img);
-}
-
-function beforeUpload(file) {
-  const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-  if (!isJpgOrPng) {
-    message.error("You can only upload JPG/PNG file!");
-  }
-  const isLt2M = file.size / 1024 / 1024 < 2;
-  if (!isLt2M) {
-    message.error("Image must smaller than 2MB!");
-  }
-  return isJpgOrPng && isLt2M;
-}
-
 class DrawerCreate extends React.Component {
   constructor(props) {
     super(props);
@@ -52,18 +35,38 @@ class DrawerCreate extends React.Component {
       visible: false,
       loading: false,
       formData: null,
-      type: "UNISEX"
+      type: "u",
+      categoryId: "Top",
+      image: null,
+      url: "",
+      progress: 0
     };
+    this.handleChangePhoto = this.handleChangePhoto.bind(this);
+    this.handleUpload = this.handleUpload.bind(this);
   }
 
-  handleSubmit = e => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log("Received values of form: ", values);
-      }
+  handleChangePhoto = e => {
+    if (e.target.files[0]) {
+      const image = e.target.files[0];
+      this.setState(() => ({ image }));
+    }
+  };
+  handleUpload = () => {
+    const { image } = this.state;
+    const uploadTask = storage.ref(`images/${image.name}`).put(image);
+    uploadTask.on("state_changed", () => {
+      // complete function ....
+      storage
+        .ref("images")
+        .child(image.name)
+        .getDownloadURL()
+        .then(url => {
+          console.log(url);
+          this.setState({ url });
+        });
     });
   };
+  
   normFile = e => {
     console.log("Upload event:", e);
     if (Array.isArray(e)) {
@@ -88,66 +91,105 @@ class DrawerCreate extends React.Component {
     });
   };
 
+  renderCategory = () => {
+    let category = this.props.formData.category;
+    return category.map((data, index) => (
+      <Radio key={index} value={data.id}>
+        {data.categoryName}
+      </Radio>
+    ));
+  };
+
   renderShapType = () => {
-    if (this.state.type === "UNISEX") {
+    if (this.state.type === "u") {
       let men = this.props.formData.men;
       let women = this.props.formData.women;
       let unisex = men.concat(women);
       return unisex.map((data, index) => (
         <Col span={15} keys={index}>
-          <Checkbox value={data.shapeName}>{data.shapeName}</Checkbox>
+          <Checkbox value={data.id}>{data.shapeName}</Checkbox>
         </Col>
       ));
     }
-    if (this.state.type === "MAN") {
+    if (this.state.type === "m") {
       return this.props.formData.men.map((data, index) => (
         <Col span={15} keys={index}>
-          <Checkbox value={data.shapeName}>{data.shapeName}</Checkbox>
+          <Checkbox value={data.id}>{data.shapeName}</Checkbox>
         </Col>
       ));
     }
 
-    if (this.state.type === "WOMAN") {
+    if (this.state.type === "w") {
       return this.props.formData.women.map((data, index) => (
         <Col span={15} keys={index}>
-          <Checkbox value={data.shapeName}>{data.shapeName}</Checkbox>
+          <Checkbox value={data.id}>{data.shapeName}</Checkbox>
         </Col>
       ));
     }
   };
 
-  handleChange = info => {
-    if (info.file.status === "uploading") {
-      this.setState({ loading: true });
-      return;
-    }
-    if (info.file.status === "done") {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj, imageUrl =>
-        this.setState({
-          imageUrl,
-          loading: false
-        })
-      );
-    }
-  };
   handleSubmit = e => {
-    e.preventDefault();
-    // console.log("Brandname : ",e.target.brandname.value);
-    // console.log("Description : ",e.target.description.value);
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log("Received values of form: ", values);
-        var brandName = values.brandofclothes;
-        var description = values.description;
-        var link = values.link;
-        var event = values.event;
-        var eventType = values["event-type"];
-        var shape = values.shape;
+    const { image } = this.state;
+    const uploadTask = storage.ref(`images/${image.name}`).put(image);
+    uploadTask.on("state_changed", () => {
+      // complete function ....
+      storage
+        .ref("images")
+        .child(image.name)
+        .getDownloadURL()
+        .then(url => {
+          // console.log(url);
+          // this.setState({ url });
+          this.props.form.validateFields(async (err, values) => {
+            if (!err) {
+              console.log("Received values of form: ", values);
+              var image = url;
+              var clothesName = values.nameofclothes;
+              var description = values.description;
+              var link = values.link;
+              var event = values.event;
+              var place = values.place;
+              var gender = this.state.type;
+              var shape = values.shape;
+              var cat = values.category
+              console.log(
+                "Image : ",
+                url,
+                "Clothesname : ",
+                clothesName,
+                "\nDescription : ",
+                description,
+                "\nLink : ",
+                link,
+                "\nEvent : ",
+                event,
+                "\nPlace : ",
+                place,
+                "\nGender : ",
+                gender,
+                "\nShape : ",
+                shape,
+                "\nCategory : ",
+                cat
+              );
 
-        console.log("Brandname : ",brandName,"\nDescription : ",description,"\nEvent : ",event,
-        "\nEvent Type : ",eventType,"\nShape : ",shape);
-      }
+              let resp = await rest.addCloth({
+                clotheName: clothesName,
+                clothePictureUrl: url,
+                clotheGender: gender,
+                categoryId_id: cat,
+                clotheDrescription: description,
+                clotheLinkToBuy: link,
+                clotheBrand_id: "1",
+                event: event,
+                place: place,
+                shape: shape
+              });
+
+              console.log("--------------------->",resp)
+            }
+          });
+        });
     });
   };
 
@@ -197,46 +239,46 @@ class DrawerCreate extends React.Component {
           <Form
             labelCol={{ span: 5 }}
             wrapperCol={{ span: 12 }}
-            onSubmit={this.handleSubmit}
           >
-            <Form.Item label="Upload">
-              {getFieldDecorator("upload", {
-                valuePropName: "fileList",
-                getValueFromEvent: this.normFile
-              })(
-                <Upload
-                  name="avatar"
-                  listType="picture-card"
-                  className="avatar-uploader"
-                  showUploadList={false}
-                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                  beforeUpload={beforeUpload}
-                  onChange={this.handleChange}
-                >
-                  {imageUrl ? (
-                    <img
-                      src={imageUrl}
-                      alt="avatar"
-                      style={{ width: "100%" }}
-                    />
-                  ) : (
-                      uploadButton
-                    )}
-                </Upload>
-              )}
+            <Form.Item
+              label="Upload"
+              labelCol={{ span: 5 }}
+              wrapperCol={{ span: 12 }}
+            >
+              <img
+                src={this.state.url || "http://via.placeholder.com/100x100"}
+                height="100"
+                width="100"
+              />
+              <br />
+              <input type="file" onChange={this.handleChangePhoto} />
+              <br />
             </Form.Item>
-
-            <Form.Item label="Brand Name">
-              {getFieldDecorator("brandofclothes", {
-                rules: [{ required: true, message: "Please input brand name!" }]
-              })(<Input name="brandname"/>)}
+            <Form.Item label="Clothes Name">
+              {getFieldDecorator("nameofclothes", {
+                rules: [
+                  { required: true, message: "Please input clothes name!" }
+                ]
+              })(<Input name="clothesName" />)}
             </Form.Item>
             <Form.Item label="Description">
               {getFieldDecorator("description", {
                 rules: [
                   { required: true, message: "Please input description!" }
                 ]
-              })(<Input name="description"/>)}
+              })(<Input name="description" />)}
+            </Form.Item>
+            <Form.Item label="Category:">
+              {getFieldDecorator("category", {})(
+                <Radio.Group style={{ width: "100%" }}>
+                  {this.renderCategory()}
+                </Radio.Group>
+              )}
+            </Form.Item>
+            <Form.Item label="Link">
+              {getFieldDecorator("link", {
+                rules: [{ required: true, message: "Please input link!" }]
+              })(<Input name="link" />)}
             </Form.Item>
             <Divider />
             <Form.Item label="Event">
@@ -247,7 +289,7 @@ class DrawerCreate extends React.Component {
                   <Row>
                     {this.props.formData.events.map((data, index) => (
                       <Col span={10} keys={index}>
-                        <Checkbox value={data.event}>{data.event}</Checkbox>
+                        <Checkbox value={data.id}>{data.event}</Checkbox>
                       </Col>
                     ))}
                   </Row>
@@ -255,15 +297,15 @@ class DrawerCreate extends React.Component {
               )}
             </Form.Item>
             <Divider />
-            <Form.Item label="Event Type">
-              {getFieldDecorator("event-type", {
+            <Form.Item label="Place">
+              {getFieldDecorator("place", {
                 initialValue: ["A", "B"]
               })(
                 <Checkbox.Group style={{ width: "100%" }}>
                   <Row>
                     {this.props.formData.places.map((data, index) => (
                       <Col span={10} keys={index}>
-                        <Checkbox value={data.place}>{data.place}</Checkbox>
+                        <Checkbox value={data.id}>{data.place}</Checkbox>
                       </Col>
                     ))}
                   </Row>
@@ -273,9 +315,9 @@ class DrawerCreate extends React.Component {
             <Divider />
             <Form.Item label="Gender:">
               <Radio.Group onChange={this.onChange} value={this.state.type}>
-                <Radio value="UNISEX">UNISEX</Radio>
-                <Radio value="MAN">MAN</Radio>
-                <Radio value="WOMAN">WOMAN</Radio>
+                <Radio value="u">UNISEX</Radio>
+                <Radio value="m">MAN</Radio>
+                <Radio value="w">WOMAN</Radio>
               </Radio.Group>
             </Form.Item>
             <Form.Item label="Shape">
@@ -288,7 +330,7 @@ class DrawerCreate extends React.Component {
               )}
             </Form.Item>
             <Form.Item wrapperCol={{ span: 12, offset: 5 }}>
-              <Button type="primary" htmlType="add">
+              <Button type="primary" onClick={this.handleSubmit}>
                 Add
               </Button>
             </Form.Item>

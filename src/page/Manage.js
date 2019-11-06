@@ -60,11 +60,13 @@ class Manage extends React.Component {
         let getAllPlace = await rest.getAllPlace()
         let womenShape = await rest.womenShape()
         let menShape = await rest.menShape()
+        let cat = await rest.category()
         const formData = {
             events: getAllEvent.data,
             places: getAllPlace.data,
             women: womenShape.data,
-            men: menShape.data
+            men: menShape.data,
+            category:cat.data
         }
         this.setState({
             formData

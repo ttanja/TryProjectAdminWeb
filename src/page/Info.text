@@ -1,0 +1,29 @@
+{
+"clotheName" : "a",
+"clothePictureUrl": "a",
+"clotheGender": "w",
+"categoryId_id": "8",
+"clotheDrescription": "a",
+"clotheLinkToBuy":"a",
+"clotheBrand_id": "1",
+"event": [
+"1","2"
+],
+"place": [
+"1","2"
+],
+"shape": [
+"7","8"
+]
+}
+
+
+
+/getClothesByBrandAndCategory/
+/editClothe/
+/addClothe/
+
+{
+"clotheBrand": "1",
+"categoryId": "8"
+}

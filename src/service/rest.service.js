@@ -16,6 +16,14 @@ class RestService  {
   menShape(){
     return axios.get('http://3.92.192.76:8000/menShape/');
   }
+
+  category(){
+    return axios.get('http://3.92.192.76:8000/categoryManagement/')
+  }
+
+  addCloth(data){
+    return axios.post('http://3.92.192.76:8000/addClothe/',data)
+  }
 }
 
 export default RestService;

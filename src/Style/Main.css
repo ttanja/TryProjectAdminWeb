@@ -31,7 +31,20 @@
   padding-bottom: 9px;
   margin-bottom: 20px;
 }
-
+.UploadButton{
+  background-Color: rgb(71, 71, 71);
+  border-Width: 1px;
+  border-Color: rgb(27, 27, 27);
+  height: 42px;
+  display: flex;
+  width: 230px;
+  border-Radius: 3px;
+  justify-content: center;
+  align-items: center;
+  margin-left: 12px;
+  padding-bottom: 9px;
+  margin-bottom: 20px;
+}
 .Botton {
   display: flex;
   justify-content: center;
