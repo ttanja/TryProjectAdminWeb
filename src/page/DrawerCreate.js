@@ -66,7 +66,7 @@ class DrawerCreate extends React.Component {
         });
     });
   };
-  
+
   normFile = e => {
     console.log("Upload event:", e);
     if (Array.isArray(e)) {
@@ -128,18 +128,11 @@ class DrawerCreate extends React.Component {
     }
   };
 
-  handleSubmit = e => {
+  handleSubmit = async e => {
+    console.log("UPLOAD 1")
     const { image } = this.state;
-    const uploadTask = storage.ref(`images/${image.name}`).put(image);
-    uploadTask.on("state_changed", () => {
-      // complete function ....
-      storage
-        .ref("images")
-        .child(image.name)
-        .getDownloadURL()
-        .then(url => {
-          // console.log(url);
-          // this.setState({ url });
+    const snapshot = await storage.ref(`images/${image.name}`).put(image)
+    const url = await snapshot.ref.getDownloadURL()
           this.props.form.validateFields(async (err, values) => {
             if (!err) {
               console.log("Received values of form: ", values);
@@ -152,45 +145,24 @@ class DrawerCreate extends React.Component {
               var gender = this.state.type;
               var shape = values.shape;
               var cat = values.category
-              console.log(
-                "Image : ",
-                url,
-                "Clothesname : ",
-                clothesName,
-                "\nDescription : ",
-                description,
-                "\nLink : ",
-                link,
-                "\nEvent : ",
-                event,
-                "\nPlace : ",
-                place,
-                "\nGender : ",
-                gender,
-                "\nShape : ",
-                shape,
-                "\nCategory : ",
-                cat
-              );
-
-              let resp = await rest.addCloth({
-                clotheName: clothesName,
-                clothePictureUrl: url,
-                clotheGender: gender,
-                categoryId_id: cat,
-                clotheDrescription: description,
-                clotheLinkToBuy: link,
-                clotheBrand_id: "1",
-                event: event,
-                place: place,
-                shape: shape
-              });
-
-              console.log("--------------------->",resp)
+              try {
+                await rest.addCloth({
+                  clotheName: clothesName,
+                  clothePictureUrl: url,
+                  clotheGender: gender,
+                  categoryId_id: cat,
+                  clotheDrescription: description,
+                  clotheLinkToBuy: link,
+                  clotheBrand_id: "1",
+                  event: event,
+                  place: place,
+                  shape: shape
+                });
+              } catch (error) {
+                console.log(error)
+              }
             }
           });
-        });
-    });
   };
 
   handleSelectChange = value => {
