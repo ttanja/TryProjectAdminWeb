@@ -19,6 +19,7 @@ import "../Style/Main.css";
 import "../Style/App.css";
 import RestService from "../service/rest.service";
 import { realpath } from "fs";
+import axios from "axios";
 
 const { Content, Sider, Header } = Layout;
 const { SubMenu } = Menu;
@@ -106,7 +107,7 @@ class Manage extends React.Component {
     let resp = await rest.deleteCloth({
       id: id
     });
-    console.log(resp)
+    console.log(resp.id);
   };
 
   render() {
@@ -159,7 +160,7 @@ class Manage extends React.Component {
             <div style={{ padding: 24, background: "#fff", minHeight: 360 }}>
               <Row gutter={16}>
                 {this.state.clothes == null ? (
-                  <div>SAD</div>
+                  <div></div>
                 ) : (
                   this.state.clothes.map((data, key) => (
                     <Card
