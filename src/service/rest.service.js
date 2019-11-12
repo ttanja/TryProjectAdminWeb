@@ -29,7 +29,18 @@ class RestService  {
     return axios.post('http://3.92.192.76:8000/editClothe/',data)
   }
   getClothesToShow(){
-    return axios.get('http://3.92.192.76:8000/getClothesByBrandAndCategory/')
+    return axios.post('http://3.92.192.76:8000/getClothesByBrandAndCategory/')
+    }
+  getClothesToShow(){
+      return axios.post('http://3.92.192.76:8000/getClothesByBrandAndCategory/')
+  }
+
+  getClothByBrandAndCat(data){
+    return axios.post('http://3.92.192.76:8000/getClothesByBrandAndCategory/',data)
+  }
+
+  deleteCloth(data){
+    return axios.post('http://3.92.192.76:8000/deleteClothe/',data)
   }
 }
 

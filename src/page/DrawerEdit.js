@@ -10,11 +10,14 @@ import {
   Checkbox,
   Col,
   Row,
+  Radio,
   Divider
 } from "antd";
-
 import React from "react";
+import RestService from "../service/rest.service";
+import { storage } from "../Firebase/Index";
 
+const rest = new RestService();
 const { Option } = Select;
 
 const pStyle = {
@@ -25,41 +28,45 @@ const pStyle = {
   marginBottom: 16
 };
 
-function getBase64(img, callback) {
-  const reader = new FileReader();
-  reader.addEventListener("load", () => callback(reader.result));
-  reader.readAsDataURL(img);
-}
-
-function beforeUpload(file) {
-  const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-  if (!isJpgOrPng) {
-    message.error("You can only upload JPG/PNG file!");
-  }
-  const isLt2M = file.size / 1024 / 1024 < 2;
-  if (!isLt2M) {
-    message.error("Image must smaller than 2MB!");
-  }
-  return isJpgOrPng && isLt2M;
-}
-
 class DrawerEdit extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       visible: false,
-      loading: false
+      loading: false,
+      formData: null,
+      type: "u",
+      categoryId: "Top",
+      image: null,
+      url: "",
+      progress: 0
     };
+    this.handleChangePhoto = this.handleChangePhoto.bind(this);
+    this.handleUpload = this.handleUpload.bind(this);
   }
 
-  handleSubmit = e => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log("Received values of form: ", values);
-      }
+  handleChangePhoto = e => {
+    if (e.target.files[0]) {
+      const image = e.target.files[0];
+      this.setState(() => ({ image }));
+    }
+  };
+  handleUpload = () => {
+    const { image } = this.state;
+    const uploadTask = storage.ref(`images/${image.name}`).put(image);
+    uploadTask.on("state_changed", () => {
+      // complete function ....
+      storage
+        .ref("images")
+        .child(image.name)
+        .getDownloadURL()
+        .then(url => {
+          console.log(url);
+          this.setState({ url });
+        });
     });
   };
+
   normFile = e => {
     console.log("Upload event:", e);
     if (Array.isArray(e)) {
@@ -69,7 +76,7 @@ class DrawerEdit extends React.Component {
   };
 
   componentDidMount() {
-    console.log(this.props);
+    console.log("===============>", this.props);
   }
 
   showDrawer = () => {
@@ -84,26 +91,76 @@ class DrawerEdit extends React.Component {
     });
   };
 
-  handleChange = info => {
-    if (info.file.status === "uploading") {
-      this.setState({ loading: true });
-      return;
+  renderCategory = () => {
+    let category = this.props.formData.category;
+    return category.map((data, index) => (
+      <Radio key={index} value={data.id}>
+        {data.categoryName}
+      </Radio>
+    ));
+  };
+
+  renderShapType = () => {
+    if (this.state.type === "u") {
+      let men = this.props.formData.men;
+      let women = this.props.formData.women;
+      let unisex = men.concat(women);
+      return unisex.map((data, index) => (
+        <Col span={15} keys={index}>
+          <Checkbox value={data.id}>{data.shapeName}</Checkbox>
+        </Col>
+      ));
     }
-    if (info.file.status === "done") {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj, imageUrl =>
-        this.setState({
-          imageUrl,
-          loading: false
-        })
-      );
+    if (this.state.type === "m") {
+      return this.props.formData.men.map((data, index) => (
+        <Col span={15} keys={index}>
+          <Checkbox value={data.id}>{data.shapeName}</Checkbox>
+        </Col>
+      ));
+    }
+
+    if (this.state.type === "w") {
+      return this.props.formData.women.map((data, index) => (
+        <Col span={15} keys={index}>
+          <Checkbox value={data.id}>{data.shapeName}</Checkbox>
+        </Col>
+      ));
     }
   };
-  handleSubmit = e => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+
+  handleSubmit = async e => {
+    console.log("UPLOAD 1");
+    const { image } = this.state;
+    const snapshot = await storage.ref(`images/${image.name}`).put(image);
+    const url = await snapshot.ref.getDownloadURL();
+    this.props.form.validateFields(async (err, values) => {
       if (!err) {
         console.log("Received values of form: ", values);
+        var image = url;
+        var clothesName = values.nameofclothes;
+        var description = values.description;
+        var link = values.link;
+        var event = values.event;
+        var place = values.place;
+        var gender = this.state.type;
+        var shape = values.shape;
+        var cat = values.category;
+        try {
+          await rest.getClothByBrandAndCat({
+            clotheName: clothesName,
+            clothePictureUrl: url,
+            clotheGender: gender,
+            categoryId_id: cat,
+            clotheDrescription: description,
+            clotheLinkToBuy: link,
+            clotheBrand_id: "1",
+            event: event,
+            place: place,
+            shape: shape
+          });
+        } catch (error) {
+          console.log(error);
+        }
       }
     });
   };
@@ -112,6 +169,13 @@ class DrawerEdit extends React.Component {
     console.log(value);
     this.props.form.setFieldsValue({
       note: `Hi, ${value === "male" ? "man" : "lady"}!`
+    });
+  };
+
+  onChange = e => {
+    console.log("radio checked", e.target.value);
+    this.setState({
+      type: e.target.value
     });
   };
 
@@ -139,54 +203,52 @@ class DrawerEdit extends React.Component {
           visible={this.state.visible}
         >
           <div>
-            <p style={{ ...pStyle, marginBottom: 24 }}>Edit Clothes Detail</p>
+            <p style={{ ...pStyle, marginBottom: 24 }}>Edit Clothes</p>
           </div>
           <Divider />
-          <Form
-            labelCol={{ span: 5 }}
-            wrapperCol={{ span: 12 }}
-            onSubmit={this.handleSubmit}
-          >
+          <Form labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
             <Form.Item
               label="Upload"
+              labelCol={{ span: 5 }}
+              wrapperCol={{ span: 12 }}
             >
-              {getFieldDecorator("upload", {
-                valuePropName: "fileList",
-                getValueFromEvent: this.normFile
-              })(
-                <Upload
-                  name="avatar"
-                  listType="picture-card"
-                  className="avatar-uploader"
-                  showUploadList={false}
-                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                  beforeUpload={beforeUpload}
-                  onChange={this.handleChange}
-                >
-                  {imageUrl ? (
-                    <img
-                      src={imageUrl}
-                      alt="avatar"
-                      style={{ width: "100%" }}
-                    />
-                  ) : (
-                    uploadButton
-                  )}
-                </Upload>
-              )}
+              <img
+                src={this.props.clothePictureUrl}
+                height="100"
+                width="100"
+              />
+              <br />
+              <input type="file" onChange={this.handleChangePhoto} />
+              <br />
             </Form.Item>
-
-            <Form.Item label="Brand Name">
-              {getFieldDecorator("brandofclothes", {
-                rules: [{ required: true, message: "Please input brand name!" }]
-              })(<Input />)}
+            <Form.Item label="Clothes Name">
+              {getFieldDecorator("nameofclothes", {
+                rules: [
+                  { required: true, message: "Please input clothes name!" }
+                ]
+              })(<Input name="clothesName" />)}
             </Form.Item>
             <Form.Item label="Description">
               {getFieldDecorator("description", {
                 rules: [
                   { required: true, message: "Please input description!" }
                 ]
-              })(<Input />)}
+              })(<Input name="description" />)}
+            </Form.Item>
+            <Form.Item label="Category:">
+              {getFieldDecorator(
+                "category",
+                {}
+              )(
+                <Radio.Group style={{ width: "100%" }}>
+                  {this.renderCategory()}
+                </Radio.Group>
+              )}
+            </Form.Item>
+            <Form.Item label="Link">
+              {getFieldDecorator("link", {
+                rules: [{ required: true, message: "Please input link!" }]
+              })(<Input name="link" />)}
             </Form.Item>
             <Divider />
             <Form.Item label="Event">
@@ -195,77 +257,52 @@ class DrawerEdit extends React.Component {
               })(
                 <Checkbox.Group style={{ width: "100%" }}>
                   <Row>
-                    <Col span={10}>
-                      <Checkbox value="A">Party</Checkbox>
-                    </Col>
-                    <Col span={10}>
-                      <Checkbox value="B">Wedding</Checkbox>
-                    </Col>
-                    <Col span={10}>
-                      <Checkbox value="C">Make Merit </Checkbox>
-                    </Col>
-                    <Col span={10}>
-                      <Checkbox value="D">Funeral</Checkbox>
-                    </Col>
+                    {this.props.formData.events.map((data, index) => (
+                      <Col span={10} keys={index}>
+                        <Checkbox value={data.id}>{data.event}</Checkbox>
+                      </Col>
+                    ))}
                   </Row>
                 </Checkbox.Group>
               )}
             </Form.Item>
             <Divider />
-            <Form.Item label="Event Type">
-              {getFieldDecorator("event-type", {
+            <Form.Item label="Place">
+              {getFieldDecorator("place", {
                 initialValue: ["A", "B"]
               })(
                 <Checkbox.Group style={{ width: "100%" }}>
                   <Row>
-                    <Col span={10}>
-                      <Checkbox value="A">Beach</Checkbox>
-                    </Col>
-                    <Col span={10}>
-                      <Checkbox value="B">Hotel</Checkbox>
-                    </Col>
-                    <Col span={10}>
-                      <Checkbox value="C">Bar</Checkbox>
-                    </Col>
-                    <Col span={10}>
-                      <Checkbox value="D">Resturant</Checkbox>
-                    </Col>
-                    <Col span={10}>
-                      <Checkbox value="E">Temple</Checkbox>
-                    </Col>
+                    {this.props.formData.places.map((data, index) => (
+                      <Col span={10} keys={index}>
+                        <Checkbox value={data.id}>{data.place}</Checkbox>
+                      </Col>
+                    ))}
                   </Row>
                 </Checkbox.Group>
               )}
             </Form.Item>
             <Divider />
+            <Form.Item label="Gender:">
+              <Radio.Group onChange={this.onChange} value={this.state.type}>
+                <Radio value="u">UNISEX</Radio>
+                <Radio value="m">MAN</Radio>
+                <Radio value="w">WOMAN</Radio>
+              </Radio.Group>
+            </Form.Item>
             <Form.Item label="Shape">
               {getFieldDecorator("shape", {
                 initialValue: ["A", "B"]
               })(
                 <Checkbox.Group style={{ width: "100%" }}>
-                  <Row>
-                    <Col span={15}>
-                      <Checkbox value="A">Pear</Checkbox>
-                    </Col>
-                    <Col span={15}>
-                      <Checkbox value="B">Hourglass</Checkbox>
-                    </Col>
-                    <Col span={15}>
-                      <Checkbox value="C">Apple</Checkbox>
-                    </Col>
-                    <Col span={15}>
-                      <Checkbox value="D">Oval</Checkbox>
-                    </Col>
-                    <Col span={15}>
-                      <Checkbox value="E">Diamond</Checkbox>
-                    </Col>
-                  </Row>
+                  <Row>{this.renderShapType()}</Row>
                 </Checkbox.Group>
               )}
             </Form.Item>
+
             <Form.Item wrapperCol={{ span: 12, offset: 5 }}>
               <Button type="primary" htmlType="edit">
-              Edit
+                Edit
               </Button>
             </Form.Item>
           </Form>

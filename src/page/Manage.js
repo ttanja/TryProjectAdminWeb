@@ -1,151 +1,204 @@
-import { Layout, Menu, Breadcrumb, Icon, Row, Col, Card, Popconfirm, Button } from 'antd';
-import React from 'react'
-import logo2 from '../picture/LOGO4.png'
-import imageClothes from '../picture/FW19-lookbook-2075x1500-15-686x948.jpg';
-import DrawerInfo from './DrawerInfo';
-import DrawerEdit from './DrawerEdit';
-import DrawerCreate from './DrawerCreate';
-import '../Style/Main.css'
-import '../Style/App.css'
-import RestService from '../service/rest.service'
+import {
+  Layout,
+  Menu,
+  Breadcrumb,
+  Icon,
+  Row,
+  Col,
+  Card,
+  Popconfirm,
+  Button
+} from "antd";
+import React from "react";
+import logo2 from "../picture/LOGO4.png";
+import imageClothes from "../picture/FW19-lookbook-2075x1500-15-686x948.jpg";
+import DrawerInfo from "./DrawerInfo";
+import DrawerEdit from "./DrawerEdit";
+import DrawerCreate from "./DrawerCreate";
+import "../Style/Main.css";
+import "../Style/App.css";
+import RestService from "../service/rest.service";
+import { realpath } from "fs";
 
 const { Content, Sider, Header } = Layout;
 const { SubMenu } = Menu;
 const { Meta } = Card;
-const rest = new RestService
+const rest = new RestService();
 
 class Manage extends React.Component {
-    state = {
-        collapsed: false,
-        visible: false,
-        formData: null
+  state = {
+    collapsed: false,
+    visible: false,
+    formData: null,
+    clothes: null
+  };
+
+  onCollapse = collapsed => {
+    console.log(collapsed);
+    this.setState({ collapsed });
+  };
+
+  showModal = () => {
+    this.setState({
+      visible: true
+    });
+  };
+
+  handleOk = e => {
+    console.log(e);
+    this.setState({
+      visible: false
+    });
+  };
+
+  handleCancel = e => {
+    console.log(e);
+    this.setState({
+      visible: false
+    });
+  };
+
+  toggle = () => {
+    console.log("toggle");
+  };
+
+  componentDidMount() {
+    this.getData();
+  }
+
+  getData = async () => {
+    let getAllEvent = await rest.getAllEvent();
+    let getAllPlace = await rest.getAllPlace();
+    let womenShape = await rest.womenShape();
+    let menShape = await rest.menShape();
+    let cat = await rest.category();
+    const formData = {
+      events: getAllEvent.data,
+      places: getAllPlace.data,
+      women: womenShape.data,
+      men: menShape.data,
+      category: cat.data
     };
+    this.setState({
+      formData
+    });
+    console.log(this.state.formData);
+  };
 
-    onCollapse = collapsed => {
-        console.log(collapsed);
-        this.setState({ collapsed });
+  getTop = async () => {
+    let getClothesToShow = await rest.getClothesToShow();
+    let cat = await rest.category();
+
+    const formData = {
+      category: cat.data
     };
+  };
 
-    showModal = () => {
-        this.setState({
-            visible: true,
-        });
-    };
+  getCloth = async id => {
+    let resp = await rest.getClothByBrandAndCat({
+      clotheBrand: "1",
+      categoryId: id
+    });
+    this.setState({ clothes: resp.data });
+  };
 
-    handleOk = e => {
-        console.log(e);
-        this.setState({
-            visible: false,
-        });
-    };
+  confirm = async id => {
+    let resp = await rest.deleteCloth({
+      id: id
+    });
+    console.log(resp)
+  };
 
-    handleCancel = e => {
-        console.log(e);
-        this.setState({
-            visible: false,
-        });
-    };
+  render() {
+    // console.log(this.state.events);
 
-    toggle = () => {
-        console.log('toggle');
+    return (
+      <Layout style={{ display: "flex", flexDirection: "row" }}>
+        <div style={{ width: "256px" }}>
+          <Menu
+            mode="inline"
+            openKeys={this.state.openKeys}
+            onOpenChange={this.onOpenChange}
+            style={{ width: 256, minHeight: "100vh" }}
+          >
+            <div className="logo">
+              <img src={logo2} className="Logo" />
+            </div>
 
-    }
+            {this.state.formData !== null ? (
+              <DrawerCreate formData={this.state.formData} />
+            ) : (
+              <div></div>
+            )}
+            <Menu.Item key="1" onClick={e => this.getCloth(5)}>
+              Top
+            </Menu.Item>
+            <Menu.Item key="2" onClick={e => this.getCloth(7)}>
+              Jacket
+            </Menu.Item>
+            <Menu.Item key="3" onClick={e => this.getCloth(8)}>
+              Bottom
+            </Menu.Item>
+            <Menu.Item key="4" onClick={e => this.getCloth(3)}>
+              Shoes
+            </Menu.Item>
 
-    componentDidMount() {
-        this.getData()
-    }
-
-    getData = async () => {
-        let getAllEvent = await rest.getAllEvent()
-        let getAllPlace = await rest.getAllPlace()
-        let womenShape = await rest.womenShape()
-        let menShape = await rest.menShape()
-        let cat = await rest.category()
-        const formData = {
-            events: getAllEvent.data,
-            places: getAllPlace.data,
-            women: womenShape.data,
-            men: menShape.data,
-            category:cat.data
-        }
-        this.setState({
-            formData
-        })
-        console.log(this.state.formData);
-
-    }
-
-    render() {
-        // console.log(this.state.events);
-
-        return (
-            <Layout style={{ display: 'flex', flexDirection: "row" }}>
-                <div style={{ width: "256px" }}>
-                    <Menu
-                        mode="inline"
-                        openKeys={this.state.openKeys}
-                        onOpenChange={this.onOpenChange}
-                        style={{ width: 256, minHeight: '100vh' }}
+            <Menu.Item key="7" onClick={e => this.getCloth(7)}>
+              <Icon type="logout" />
+              Logout
+            </Menu.Item>
+          </Menu>
+        </div>
+        <Layout>
+          <Content>
+            <Header style={{ background: "#fff", padding: 0 }}>
+              <Breadcrumb style={{ margin: "16px 0" }}>
+                <Breadcrumb.Item>Top</Breadcrumb.Item>
+              </Breadcrumb>
+            </Header>
+            <div style={{ padding: 24, background: "#fff", minHeight: 360 }}>
+              <Row gutter={16}>
+                {this.state.clothes == null ? (
+                  <div>SAD</div>
+                ) : (
+                  this.state.clothes.map((data, key) => (
+                    <Card
+                      key={key}
+                      style={{}}
+                      cover={
+                        <img
+                          className="img-box"
+                          alt="test"
+                          src={data.clothePictureUrl}
+                        />
+                      }
+                      actions={[
+                        <DrawerInfo />,
+                        (this.state.formData === null ? <div></div>: <DrawerEdit formData={this.state.formData}  data={data}/>),
+                        <Popconfirm
+                          title="Are you sure？"
+                          okText="Yes"
+                          onConfirm={e => this.confirm(data.id)}
+                          cancelText="No"
+                        >
+                          <Icon type="delete" key="ellipsis" />
+                        </Popconfirm>
+                      ]}
+                      hoverable={true}
                     >
-                        <div className="logo">
-                            <img src={logo2} className="Logo" />
-                        </div>
-
-                        {this.state.formData !== null ? (<DrawerCreate formData={this.state.formData} />) : (<div></div>)}
-                        <Menu.Item key="1">Top</Menu.Item>
-                        <Menu.Item key="2">Pants</Menu.Item>
-                        <Menu.Item key="3">Skirt</Menu.Item>
-                        <Menu.Item key="4">Jacket</Menu.Item>
-                        <Menu.Item key="5">Dress</Menu.Item>
-                        <Menu.Item key="6">Shoes</Menu.Item>
-                        <Menu.Item key="7">
-                            <Icon type="logout" />Logout
-                        </Menu.Item>
-                    </Menu>
-                </div>
-                <Layout>
-                    <Content>
-                        <Header style={{ background: '#fff', padding: 0 }} >
-                            <Breadcrumb style={{ margin: '16px 0' }}>
-                                <Breadcrumb.Item>Top</Breadcrumb.Item>
-                            </Breadcrumb>
-                        </Header>
-                        <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
-                            <Row gutter={16}>
-                                <Col className="gutter-row" span={5}>
-                                    <Card
-                                        style={{}}
-                                        cover={
-                                            <img
-                                                className="img-box"
-                                                alt="test"
-                                                src={imageClothes}
-                                            />
-                                        }
-                                        actions={[
-                                            <DrawerInfo />,
-                                            <DrawerEdit />,
-                                            <Popconfirm title="Are you sure？" okText="Yes" cancelText="No">
-                                                <Icon type="delete" key="ellipsis" />
-                                            </Popconfirm>
-                                            ,
-                                        ]}
-                                        hoverable={true}
-                                    >
-                                        <Meta
-                                            title="VATANIKA"
-                                            description="CHECKED WOOL-BLEND AND CREPE OFF SHOULDER WIDE-LEG JUMPSUIT"
-                                        />
-                                    </Card>
-
-                                </Col>
-                            </Row>
-
-                        </div>
-                    </Content>
-                </Layout>
-            </Layout>
-        );
-    }
+                      <Meta
+                        title={data.clotheName}
+                        description={data.clotheDrescription}
+                      />
+                    </Card>
+                  ))
+                )}
+              </Row>
+            </div>
+          </Content>
+        </Layout>
+      </Layout>
+    );
+  }
 }
 export default Manage;
