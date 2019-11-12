@@ -107,7 +107,7 @@ class Manage extends React.Component {
     let resp = await rest.deleteCloth({
       id: id
     });
-    console.log(resp.id);
+    console.log(resp);
   };
 
   render() {
