@@ -107,7 +107,6 @@ class Manage extends React.Component {
     let resp = await rest.deleteCloth({
       id: id
     });
-    console.log(resp);
   };
 
   render() {
@@ -120,7 +119,7 @@ class Manage extends React.Component {
             mode="inline"
             openKeys={this.state.openKeys}
             onOpenChange={this.onOpenChange}
-            style={{ width: 256, minHeight: "100vh" }}
+            style={{ width: 256, minHeight: "120vh" }}
           >
             <div className="logo">
               <img src={logo2} className="Logo" />
@@ -152,12 +151,14 @@ class Manage extends React.Component {
         </div>
         <Layout>
           <Content>
-            <Header style={{ background: "#fff", padding: 0 }}>
-              <Breadcrumb style={{ margin: "16px 0" }}>
-                <Breadcrumb.Item>Top</Breadcrumb.Item>
-              </Breadcrumb>
-            </Header>
-            <div style={{ padding: 24, background: "#fff", minHeight: 360 }}>
+            <div
+              style={{
+                padding: 24,
+                background: "#fff",
+                minHeight: 360,
+                minHeight: "120vh"
+              }}
+            >
               <Row gutter={16}>
                 {this.state.clothes == null ? (
                   <div></div>
@@ -175,7 +176,14 @@ class Manage extends React.Component {
                       }
                       actions={[
                         <DrawerInfo />,
-                        (this.state.formData === null ? <div></div>: <DrawerEdit formData={this.state.formData}  data={data}/>),
+                        this.state.formData === null ? (
+                          <div></div>
+                        ) : (
+                          <DrawerEdit
+                            formData={this.state.formData}
+                            data={data}
+                          />
+                        ),
                         <Popconfirm
                           title="Are you sure？"
                           okText="Yes"
