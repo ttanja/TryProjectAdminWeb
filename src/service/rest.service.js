@@ -36,8 +36,9 @@ class RestService  {
   deleteCloth(data){
     return axios.post('http://3.92.192.76:8000/deleteClothe/',data)
   }
+
   editCloth(data){
-    return axios.put('http://3.92.192.76:8000/addClothe/',data)
+    return axios.post('http://3.92.192.76:8000/editClothe/',data)
   }
 }                                                  
 

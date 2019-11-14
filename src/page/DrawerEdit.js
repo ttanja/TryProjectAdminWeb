@@ -75,8 +75,11 @@ class DrawerEdit extends React.Component {
     return e && e.fileList;
   };
 
-  componentDidMount() {
+async  componentDidMount() {
     console.log("===============>", this.props);
+    await this.setState({type:this.props.data.clotheGender})
+    console.log("TYPE",this.state.type);
+    
   }
 
   showDrawer = () => {
@@ -145,19 +148,24 @@ class DrawerEdit extends React.Component {
         var gender = this.state.type;
         var shape = values.shape;
         var cat = values.category;
+        let data = {
+              id:this.props.data.id,
+              clotheName: clothesName,
+              clothePictureUrl: url,
+              clotheGender: gender,
+              categoryId_id: cat,
+              clotheDrescription: description,
+              clotheLinkToBuy: link,
+              clotheBrand_id: "1",
+              event: event,
+              place: place,
+              shape: shape
+            }
+            console.log(data);
+            
+        
         try {
-          await rest.getClothByBrandAndCat({
-            clotheName: clothesName,
-            clothePictureUrl: url,
-            clotheGender: gender,
-            categoryId_id: cat,
-            clotheDrescription: description,
-            clotheLinkToBuy: link,
-            clotheBrand_id: "1",
-            event: event,
-            place: place,
-            shape: shape
-          });
+          await rest.editCloth(data);
         } catch (error) {
           console.log(error);
         }
@@ -223,22 +231,24 @@ class DrawerEdit extends React.Component {
             </Form.Item>
             <Form.Item label="Clothes Name">
               {getFieldDecorator("nameofclothes", {
+                initialValue:this.props.data.clotheName,
                 rules: [
-                  { required: true, message: "Please input clothes name!" }
+                  { required: true, message: "Please input clothes name!" ,}
                 ]
-              })(<Input name="clothesName" />)}
+              })(<Input name="clothesName"/>)}
             </Form.Item>
             <Form.Item label="Description">
               {getFieldDecorator("description", {
+                initialValue:this.props.data.clotheDrescription,
                 rules: [
                   { required: true, message: "Please input description!" }
                 ]
               })(<Input name="description" />)}
             </Form.Item>
             <Form.Item label="Category:">
-              {getFieldDecorator(
-                "category",
-                {}
+              {getFieldDecorator("category",{
+                initialValue:this.props.data.categoryId,
+              }
               )(
                 <Radio.Group style={{ width: "100%" }}>
                   {this.renderCategory()}
@@ -247,13 +257,14 @@ class DrawerEdit extends React.Component {
             </Form.Item>
             <Form.Item label="Link">
               {getFieldDecorator("link", {
+                  initialValue:this.props.data.clotheLinkToBuy,
                 rules: [{ required: true, message: "Please input link!" }]
               })(<Input name="link" />)}
             </Form.Item>
             <Divider />
             <Form.Item label="Event">
               {getFieldDecorator("event", {
-                initialValue: ["A", "B"]
+                initialValue:this.props.data.clotheLinkToBuy,
               })(
                 <Checkbox.Group style={{ width: "100%" }}>
                   <Row>
@@ -269,7 +280,7 @@ class DrawerEdit extends React.Component {
             <Divider />
             <Form.Item label="Place">
               {getFieldDecorator("place", {
-                initialValue: ["A", "B"]
+                initialValue:this.props.data.clotheLinkToBuy,
               })(
                 <Checkbox.Group style={{ width: "100%" }}>
                   <Row>
@@ -285,9 +296,9 @@ class DrawerEdit extends React.Component {
             <Divider />
             <Form.Item label="Gender:">
               <Radio.Group onChange={this.onChange} value={this.state.type}>
-                <Radio value="u">UNISEX</Radio>
-                <Radio value="m">MAN</Radio>
-                <Radio value="w">WOMAN</Radio>
+                <Radio value={"u"}>UNISEX</Radio>
+                <Radio value={"m"}>MAN</Radio>
+                <Radio value={"w"}>WOMAN</Radio>
               </Radio.Group>
             </Form.Item>
             <Form.Item label="Shape">
@@ -301,7 +312,7 @@ class DrawerEdit extends React.Component {
             </Form.Item>
 
             <Form.Item wrapperCol={{ span: 12, offset: 5 }}>
-              <Button type="primary" htmlType="edit">
+              <Button type="primary" htmlType="edit" onClick={this.handleSubmit}>
                 Edit
               </Button>
             </Form.Item>

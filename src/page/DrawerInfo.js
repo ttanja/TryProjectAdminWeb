@@ -73,11 +73,11 @@ class DrawerInfo extends React.Component {
         >
           <p style={{ ...pStyle, marginBottom: 24 }}>Clothes Detail</p>
             <Col>
-              <DescriptionItem title="Name Brand" content="VATANIKA" />
+              <DescriptionItem title="Name Brand" content={this.props.data.clotheName} />
             </Col>
             <Divider />
             <Col>
-              <DescriptionItem title="Description" content="CHECKED WOOL-BLEND AND CREPE OFF SHOULDER WIDE-LEG JUMPSUIT" />
+              <DescriptionItem title="Description" content={this.props.data.clotheDrescription}  />
             </Col>
             <Divider />
             <Col span={12}>

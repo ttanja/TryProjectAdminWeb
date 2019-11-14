@@ -65,6 +65,7 @@ class Manage extends React.Component {
 
   componentDidMount() {
     this.getData();
+    this.getCloth(5);
   }
 
   getData = async () => {
@@ -105,8 +106,10 @@ class Manage extends React.Component {
 
   confirm = async id => {
     let resp = await rest.deleteCloth({
+      //userId:"1",
       id: id
     });
+    this.getCloth()
   };
 
   render() {
@@ -175,7 +178,7 @@ class Manage extends React.Component {
                         />
                       }
                       actions={[
-                        <DrawerInfo />,
+                        <DrawerInfo data={data}/>,
                         this.state.formData === null ? (
                           <div></div>
                         ) : (
