@@ -19,11 +19,15 @@
 
 
 
-/getClothesByBrandAndCategory/
-/editClothe/
-/addClothe/
-
+3.92.192.76:8000/getClothesByBrandAndCategory/
 {
 "clotheBrand": "1",
 "categoryId": "8"
 }
+
+
+3.92.192.76:8000/deleteClothe/
+{
+"id": 39
+}
+

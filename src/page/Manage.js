@@ -31,7 +31,8 @@ class Manage extends React.Component {
     collapsed: false,
     visible: false,
     formData: null,
-    clothes: null
+    clothes: null,
+    id:null
   };
 
   onCollapse = collapsed => {
@@ -65,7 +66,6 @@ class Manage extends React.Component {
 
   componentDidMount() {
     this.getData();
-    this.getCloth(5);
   }
 
   getData = async () => {
@@ -79,7 +79,7 @@ class Manage extends React.Component {
       places: getAllPlace.data,
       women: womenShape.data,
       men: menShape.data,
-      category: cat.data
+      category: cat.data,
     };
     this.setState({
       formData
@@ -97,6 +97,7 @@ class Manage extends React.Component {
   };
 
   getCloth = async id => {
+    this.setState({id})
     let resp = await rest.getClothByBrandAndCat({
       clotheBrand: "1",
       categoryId: id
@@ -106,11 +107,12 @@ class Manage extends React.Component {
 
   confirm = async id => {
     let resp = await rest.deleteCloth({
-      //userId:"1",
+      userId:"1",
       id: id
     });
-    this.getCloth()
+    this.getCloth(this.state.id)
   };
+
 
   render() {
     // console.log(this.state.events);

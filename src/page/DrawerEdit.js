@@ -39,7 +39,11 @@ class DrawerEdit extends React.Component {
       categoryId: "Top",
       image: null,
       url: "",
-      progress: 0
+      progress: 0,
+      shape:null,
+      brand:null,
+      places:null,
+      event:null
     };
     this.handleChangePhoto = this.handleChangePhoto.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
@@ -51,6 +55,39 @@ class DrawerEdit extends React.Component {
       this.setState(() => ({ image }));
     }
   };
+
+  getShapebyId = async (id) =>{
+      let resp = await rest.getShape({id:id})
+      let arr = []
+      resp.data.map(ind=>{
+        arr.push(ind.id)
+      })
+    this.setState({shape:arr})
+    } 
+
+    getEventbyId = async (id) =>{
+      let resp = await rest.getEvent({id:id})
+      let arr = []
+      resp.data.map(ind=>{
+        arr.push(ind.id)
+      })
+    this.setState({event:arr})
+    } 
+
+  getPlaceById = async (id) =>{
+    let resp = await rest.getPlace({id:id})
+    let arr = []
+    resp.data.map(ind=>{
+      arr.push(ind.id)
+    })
+    this.setState({places:arr})
+  }
+
+  getBrandName = async (clotheBrand) =>{
+    let resp = await rest.getBrandName({id:clotheBrand})
+    this.setState({brand:resp.data})
+  }
+
   handleUpload = () => {
     const { image } = this.state;
     const uploadTask = storage.ref(`images/${image.name}`).put(image);
@@ -78,8 +115,10 @@ class DrawerEdit extends React.Component {
 async  componentDidMount() {
     console.log("===============>", this.props);
     await this.setState({type:this.props.data.clotheGender})
-    console.log("TYPE",this.state.type);
-    
+    await this.getShapebyId(this.props.data.id)
+    await this.getPlaceById(this.props.data.id)
+    // await this.getBrandName(this.props.data.clotheBrand)
+    await this.getEventbyId(this.props.data.id)
   }
 
   showDrawer = () => {
@@ -102,7 +141,7 @@ async  componentDidMount() {
       </Radio>
     ));
   };
-
+  
   renderShapType = () => {
     if (this.state.type === "u") {
       let men = this.props.formData.men;
@@ -264,7 +303,7 @@ async  componentDidMount() {
             <Divider />
             <Form.Item label="Event">
               {getFieldDecorator("event", {
-                initialValue:this.props.data.clotheLinkToBuy,
+                initialValue:this.state.places,
               })(
                 <Checkbox.Group style={{ width: "100%" }}>
                   <Row>
@@ -280,7 +319,7 @@ async  componentDidMount() {
             <Divider />
             <Form.Item label="Place">
               {getFieldDecorator("place", {
-                initialValue:this.props.data.clotheLinkToBuy,
+                initialValue:this.state.places,
               })(
                 <Checkbox.Group style={{ width: "100%" }}>
                   <Row>
@@ -303,7 +342,7 @@ async  componentDidMount() {
             </Form.Item>
             <Form.Item label="Shape">
               {getFieldDecorator("shape", {
-                initialValue: ["A", "B"]
+                initialValue: this.state.shape
               })(
                 <Checkbox.Group style={{ width: "100%" }}>
                   <Row>{this.renderShapType()}</Row>

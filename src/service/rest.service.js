@@ -40,6 +40,23 @@ class RestService  {
   editCloth(data){
     return axios.post('http://3.92.192.76:8000/editClothe/',data)
   }
+  
+  getEvent(data){
+    return axios.post('http://3.92.192.76:8000/getEventById/',data)
+  }
+
+  getPlace(data){
+    return axios.post('http://3.92.192.76:8000/getPlaceById/',data)
+  }
+
+  getShape(data){
+    return axios.post('http://3.92.192.76:8000/getShapeById/',data)
+  }
+
+  getBrandName(data){
+    return axios.post('http://3.92.192.76:8000/getBrandName/',data)
+  }
+
 }                                                  
 
 export default RestService;
