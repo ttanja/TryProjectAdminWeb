@@ -186,6 +186,7 @@ async  componentDidMount() {
         var gender = this.state.type;
         var shape = values.shape;
         var cat = values.category;
+        var clotheBrand = await localStorage.getItem('id')
         let data = {
               id:this.props.data.id,
               clotheName: clothesName,
@@ -194,7 +195,7 @@ async  componentDidMount() {
               categoryId_id: cat,
               clotheDrescription: description,
               clotheLinkToBuy: link,
-              clotheBrand_id: "1",
+              clotheBrand_id: clotheBrand,
               event: event,
               place: place,
               shape: shape
@@ -259,7 +260,7 @@ async  componentDidMount() {
               wrapperCol={{ span: 12 }}
             >
               <img
-                src={this.props.clothePictureUrl}
+                src={this.props.data.clothePictureUrl}
                 height="300"
                 width="300"
               />
