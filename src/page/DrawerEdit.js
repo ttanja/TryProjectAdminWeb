@@ -117,7 +117,6 @@ async  componentDidMount() {
     await this.setState({type:this.props.data.clotheGender})
     await this.getShapebyId(this.props.data.id)
     await this.getPlaceById(this.props.data.id)
-    // await this.getBrandName(this.props.data.clotheBrand)
     await this.getEventbyId(this.props.data.id)
   }
 

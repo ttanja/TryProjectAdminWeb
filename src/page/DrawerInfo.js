@@ -54,29 +54,29 @@ class DrawerInfo extends React.Component {
     await this.getPlaceById(this.props.data.id);
     await this.getEventbyId(this.props.data.id);
   }
-  getShapebyId = async id => {
-    let resp = await rest.getShape({ id: id });
+  getShapebyId = async shape => {
+    let resp = await rest.getShape({ id: shape });
     let arr = [];
     resp.data.map(ind => {
-      arr.push(ind.id);
+      arr.push(ind.shape);
     });
     this.setState({ shape: arr });
   };
 
-  getEventbyId = async id => {
-    let resp = await rest.getEvent({ id: id });
+  getEventbyId = async event => {
+    let resp = await rest.getEvent({ id: event });
     let arr = [];
     resp.data.map(ind => {
-      arr.push(ind.id);
+      arr.push(ind.event);
     });
     this.setState({ event: arr });
   };
 
-  getPlaceById = async id => {
-    let resp = await rest.getPlace({ id: id });
+  getPlaceById = async place => {
+    let resp = await rest.getPlace({ id: place });
     let arr = [];
     resp.data.map(ind => {
-      arr.push(ind.id);
+      arr.push(ind.place);
     });
     this.setState({ places: arr });
   };
