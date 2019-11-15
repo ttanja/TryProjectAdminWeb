@@ -39,10 +39,11 @@ class DrawerCreate extends React.Component {
       categoryId: "Top",
       image: null,
       url: "",
-      progress: 0
+      progress: 0, 
     };
     this.handleChangePhoto = this.handleChangePhoto.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
+    
   }
 
   handleChangePhoto = e => {
@@ -99,6 +100,8 @@ class DrawerCreate extends React.Component {
       </Radio>
     ));
   };
+  
+
 
   renderShapType = () => {
     if (this.state.type === "u") {
@@ -144,7 +147,9 @@ class DrawerCreate extends React.Component {
               var place = values.place;
               var gender = this.state.type;
               var shape = values.shape;
-              var cat = values.category
+              var cat = values.category;
+              var clotheBrand = this.state.user.brandGoogleId;
+              
               try {
                 await rest.addCloth({
                   clotheName: clothesName,
@@ -153,7 +158,7 @@ class DrawerCreate extends React.Component {
                   categoryId_id: cat,
                   clotheDrescription: description,
                   clotheLinkToBuy: link,
-                  clotheBrand_id: "1",
+                  clotheBrand_id: clotheBrand,
                   event: event,
                   place: place,
                   shape: shape
@@ -163,6 +168,7 @@ class DrawerCreate extends React.Component {
               }
             }
           });
+          this.onClose();
   };
 
   handleSelectChange = value => {

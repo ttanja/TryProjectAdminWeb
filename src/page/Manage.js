@@ -20,6 +20,7 @@ import "../Style/App.css";
 import RestService from "../service/rest.service";
 import { realpath } from "fs";
 import axios from "axios";
+import { Link } from 'react-router-dom';
 
 const { Content, Sider, Header } = Layout;
 const { SubMenu } = Menu;
@@ -32,7 +33,8 @@ class Manage extends React.Component {
     visible: false,
     formData: null,
     clothes: null,
-    id:null
+    id:null,
+    user: this.props.location.state.user
   };
 
   onCollapse = collapsed => {
@@ -80,6 +82,7 @@ class Manage extends React.Component {
       women: womenShape.data,
       men: menShape.data,
       category: cat.data,
+      user: this.props.location.state.user.brandGoogleId,
     };
     this.setState({
       formData
@@ -107,7 +110,7 @@ class Manage extends React.Component {
 
   confirm = async id => {
     let resp = await rest.deleteCloth({
-      userId:"1",
+      userId:"",
       id: id
     });
     this.getCloth(this.state.id)
@@ -135,22 +138,22 @@ class Manage extends React.Component {
             ) : (
               <div></div>
             )}
-            <Menu.Item key="1" onClick={e => this.getCloth(5)}>
+            <Menu.Item key="1" onClick={e => this.getCloth(8)}>
               Top
             </Menu.Item>
-            <Menu.Item key="2" onClick={e => this.getCloth(7)}>
+            <Menu.Item key="2" onClick={e => this.getCloth(5)}>
+            Bottom
+            </Menu.Item>
+            <Menu.Item key="3" onClick={e => this.getCloth(7)}>
               Jacket
             </Menu.Item>
-            <Menu.Item key="3" onClick={e => this.getCloth(8)}>
-              Bottom
-            </Menu.Item>
             <Menu.Item key="4" onClick={e => this.getCloth(3)}>
-              Shoes
+              Dress
             </Menu.Item>
 
-            <Menu.Item key="7" onClick={e => this.getCloth(7)}>
-              <Icon type="logout" />
-              Logout
+            <Menu.Item>
+              <div className="logout"><Link to='/'><Icon type="logout" />
+              Logout</Link></div>
             </Menu.Item>
           </Menu>
         </div>

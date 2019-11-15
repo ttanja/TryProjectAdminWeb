@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button } from 'antd';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+
 
 class Register extends React.Component {
     
@@ -33,7 +35,7 @@ class Register extends React.Component {
         return (
             <div>
                 <p>Input the brand name: <input type='text' onChange={this.handleChange.bind(this)}/></p>
-                <Button onClick={() => this.createBrand()}> Press Me !</Button>
+                <Link to="/manage"><Button onClick={() => this.createBrand()}> Press Me !</Button></Link>
                 <p>{this.state.brandName}</p>
             </div>
 

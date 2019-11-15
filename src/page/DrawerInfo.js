@@ -1,4 +1,4 @@
-import { Drawer, Divider, Col, Icon } from "antd";
+import { Drawer, Divider, Col, Icon ,Row} from "antd";
 import React from "react";
 import RestService from "../service/rest.service";
 
@@ -60,7 +60,7 @@ class DrawerInfo extends React.Component {
     resp.data.map(ind => {
       arr.push(ind.shape);
     });
-    this.setState({ shape: arr });
+    this.setState({ shape: arr.join() });
   };
 
   getEventbyId = async event => {
@@ -69,7 +69,7 @@ class DrawerInfo extends React.Component {
     resp.data.map(ind => {
       arr.push(ind.event);
     });
-    this.setState({ event: arr });
+    this.setState({ event: arr.join() });
   };
 
   getPlaceById = async place => {
@@ -78,7 +78,7 @@ class DrawerInfo extends React.Component {
     resp.data.map(ind => {
       arr.push(ind.place);
     });
-    this.setState({ places: arr });
+    this.setState({ places: arr.join() });
   };
 
   showDrawer = () => {
@@ -136,7 +136,9 @@ class DrawerInfo extends React.Component {
           </Col>
           <Divider />
           <Col span={12}>
+          
             <DescriptionItem title="Event" content={this.state.event} />
+          
           </Col>
           <Col span={12}>
             <DescriptionItem title="Place" content={this.state.places} />
