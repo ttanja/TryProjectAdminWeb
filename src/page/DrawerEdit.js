@@ -260,8 +260,8 @@ async  componentDidMount() {
             >
               <img
                 src={this.props.clothePictureUrl}
-                height="100"
-                width="100"
+                height="300"
+                width="300"
               />
               <br />
               <input type="file" onChange={this.handleChangePhoto} />

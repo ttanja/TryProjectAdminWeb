@@ -148,8 +148,7 @@ class DrawerCreate extends React.Component {
               var gender = this.state.type;
               var shape = values.shape;
               var cat = values.category;
-              var clotheBrand = this.state.user.brandGoogleId;
-              
+              var clotheBrand = await localStorage.getItem('id')
               try {
                 await rest.addCloth({
                   clotheName: clothesName,
@@ -225,8 +224,8 @@ class DrawerCreate extends React.Component {
             >
               <img
                 src={this.state.url || "http://via.placeholder.com/100x100"}
-                height="100"
-                width="100"
+                height="300"
+                width="300"
               />
               <br />
               <input type="file" onChange={this.handleChangePhoto} />

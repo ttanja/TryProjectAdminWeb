@@ -76,6 +76,7 @@ class Manage extends React.Component {
     let womenShape = await rest.womenShape();
     let menShape = await rest.menShape();
     let cat = await rest.category();
+    await localStorage.setItem('id',this.props.location.state.user.brandGoogleId)
     const formData = {
       events: getAllEvent.data,
       places: getAllPlace.data,
@@ -102,6 +103,7 @@ class Manage extends React.Component {
   getCloth = async id => {
     this.setState({id})
     let resp = await rest.getClothByBrandAndCat({
+      // clotheBrand: await localStorage.getItem('id'),
       clotheBrand: "1",
       categoryId: id
     });
@@ -164,17 +166,20 @@ class Manage extends React.Component {
                 padding: 24,
                 background: "#fff",
                 minHeight: 360,
-                minHeight: "120vh"
+                minHeight: "120vh",
+                display:'flex',
+                flexWrap:'wrap',
+                
               }}
             >
-              <Row gutter={16}>
                 {this.state.clothes == null ? (
                   <div></div>
                 ) : (
                   this.state.clothes.map((data, key) => (
+                    
                     <Card
                       key={key}
-                      style={{}}
+                      style={{width:300 , height: 445,margin:20}}
                       cover={
                         <img
                           className="img-box"
@@ -208,9 +213,10 @@ class Manage extends React.Component {
                         description={data.clotheDrescription}
                       />
                     </Card>
+                 
                   ))
                 )}
-              </Row>
+              
             </div>
           </Content>
         </Layout>
