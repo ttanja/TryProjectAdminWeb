@@ -44,7 +44,11 @@ class DrawerInfo extends React.Component {
       event:null,
       places:null,
       shape:null,
+<<<<<<< HEAD
       type: "u",
+=======
+      type:"u",
+>>>>>>> f152c1d6a8541614c96862343fe1bc700a94c95b
     };
   }
 
@@ -100,11 +104,22 @@ class DrawerInfo extends React.Component {
     console.log(resp);
   };
 
-  // renderClotheBrand = () => {
-  //   this.state.formData === null ? (
-  //     <div></div>
-  //   );
-  // };
+  returnGender(){
+    if (this.props.data.clotheGender === "u") {
+      return "Unisex"
+      
+    }
+    if (this.props.data.clotheGender === "m") {
+      return "Men"
+    }
+
+    if (this.props.data.clotheGender === "w") {
+      return "Women"
+    }
+  }
+
+
+
 
   render() {
     return (
@@ -123,7 +138,7 @@ class DrawerInfo extends React.Component {
               <div></div>
             ) : (
               <DescriptionItem
-                title="Name Brand"
+                title="Name Brand "
                 content={this.state.brand.brandName}
               />
             )}
@@ -131,27 +146,38 @@ class DrawerInfo extends React.Component {
           <Divider />
           <Col>
             <DescriptionItem
-              title="Description"
+              title="Description "
               content={this.props.data.clotheDrescription}
             />
           </Col>
           <Divider />
           <Col span={12}>
           
-            <DescriptionItem title="Event" content={this.state.event} />
+            <DescriptionItem title="Event " content={this.state.event} />
           
           </Col>
           <Col span={12}>
-            <DescriptionItem title="Place" content={this.state.places} />
+            <DescriptionItem title="Place " content={this.state.places} />
           </Col>
           <Divider />
           <Col>
+            <DescriptionItem
+              title="Gender "
+              content={this.returnGender()}
+            />
+          </Col>
+          <Divider />
+          <Col>
+<<<<<<< HEAD
             <DescriptionItem title="Gender" content={this.state.type} />
           </Col>
           <Divider />
           
           <Col>
             <DescriptionItem title="For Shape" content={this.state.shape} />
+=======
+            <DescriptionItem title="For Shape " content={this.state.shape} />
+>>>>>>> f152c1d6a8541614c96862343fe1bc700a94c95b
           </Col>
           <Divider />
         </Drawer>
