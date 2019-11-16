@@ -103,8 +103,8 @@ class Manage extends React.Component {
   getCloth = async id => {
     this.setState({id})
     let resp = await rest.getClothByBrandAndCat({
-      // clotheBrand: await localStorage.getItem('id'),
-      clotheBrand: "1",
+      clotheBrand: await localStorage.getItem('id'),
+      //clotheBrand: "1",
       categoryId: id
     });
     this.setState({ clothes: resp.data });
