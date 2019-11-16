@@ -17,6 +17,7 @@ import DrawerEdit from "./DrawerEdit";
 import DrawerCreate from "./DrawerCreate";
 import "../Style/Main.css";
 import "../Style/App.css";
+import "../Style/Login.css";
 import RestService from "../service/rest.service";
 import { realpath } from "fs";
 import axios from "axios";
@@ -129,7 +130,7 @@ class Manage extends React.Component {
             mode="inline"
             openKeys={this.state.openKeys}
             onOpenChange={this.onOpenChange}
-            style={{ width: 256, minHeight: "120vh" }}
+            style={{ width: 256, minHeight: "120vh", position: "fixed" }}
           >
             <div className="logo">
               <img src={logo2} className="Logo" />
@@ -163,12 +164,13 @@ class Manage extends React.Component {
           <Content>
             <div
               style={{
-                padding: 24,
+                paddingLeft: 90,
                 background: "#fff",
                 minHeight: 360,
                 minHeight: "120vh",
                 display:'flex',
                 flexWrap:'wrap',
+                paddingTop:20
                 
               }}
             >
@@ -179,7 +181,7 @@ class Manage extends React.Component {
                     
                     <Card
                       key={key}
-                      style={{width:300 , height: 445,margin:20}}
+                      style={{width:300 , height: 445, margin:20}}
                       cover={
                         <img
                           className="img-box"

@@ -55,7 +55,7 @@ class LoginPage extends React.Component {
                 <button className="loginGoogle" onClick={renderProps.onClick} disabled={renderProps.disabled}>
                   <img src={googleLogo} className="googleLogo-png"/>
                   <div className="SeparatorLine1"></div>
-                  <p className="fontStyle">Login with Google</p>
+                  <p className="fontStyle">LOGIN WITH GOOGLE</p>
                 </button> 
                 
             )}

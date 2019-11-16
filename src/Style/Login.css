@@ -52,7 +52,7 @@
     flex-direction: row;
     background-Color: #dc4e41;
     border-Width: 0.5px;
-    border-Color: #fff;
+    border-Color: #dc4e41;
     height: 50px;
     display: flex;
     width: 300px;
@@ -60,12 +60,14 @@
     flex-direction: 2px;
     margin-top: 300px;
   }
-  .fontStyle{
+  .fontStyle {
     color: #fff;
-    font-size: 30px;
-    font-family: 'Crimson Text', serif;
-    margin-top: 8px;
-
+    font-size: 14px;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    padding-top: 14px ;
   }
   .googleLogo-png{
     margin-top: 8px;

@@ -43,7 +43,8 @@ class DrawerInfo extends React.Component {
       brand: null,
       event:null,
       places:null,
-      shape:null
+      shape:null,
+      type: "u",
     };
   }
 
@@ -52,7 +53,7 @@ class DrawerInfo extends React.Component {
     await this.getBrandName(this.props.data.clotheBrand);
     await this.getShapebyId(this.props.data.id);
     await this.getPlaceById(this.props.data.id);
-    await this.getEventbyId(this.props.data.id);
+    await this.getEventbyId(this.props.data.id)
   }
   getShapebyId = async shape => {
     let resp = await rest.getShape({ id: shape });
@@ -144,6 +145,11 @@ class DrawerInfo extends React.Component {
             <DescriptionItem title="Place" content={this.state.places} />
           </Col>
           <Divider />
+          <Col>
+            <DescriptionItem title="Gender" content={this.state.type} />
+          </Col>
+          <Divider />
+          
           <Col>
             <DescriptionItem title="For Shape" content={this.state.shape} />
           </Col>
