@@ -22,6 +22,7 @@ import RestService from "../service/rest.service";
 import { realpath } from "fs";
 import axios from "axios";
 import { Link } from 'react-router-dom';
+import { BarLoader} from 'react-spinners';
 
 const { Content, Sider, Header } = Layout;
 const { SubMenu } = Menu;
@@ -34,8 +35,9 @@ class Manage extends React.Component {
     visible: false,
     formData: null,
     clothes: null,
-    id:null,
-    user: this.props.location.state.user
+    id: null,
+    user: this.props.location.state,
+    loading: true
   };
 
   onCollapse = collapsed => {
@@ -69,6 +71,7 @@ class Manage extends React.Component {
 
   componentDidMount() {
     this.getData();
+    this.getCloth(8);
   }
 
   getData = async () => {
@@ -77,7 +80,7 @@ class Manage extends React.Component {
     let womenShape = await rest.womenShape();
     let menShape = await rest.menShape();
     let cat = await rest.category();
-    await localStorage.setItem('id',this.props.location.state.user.brandGoogleId)
+    await localStorage.setItem('id', this.props.location.state.user.brandGoogleId)
     const formData = {
       events: getAllEvent.data,
       places: getAllPlace.data,
@@ -92,31 +95,23 @@ class Manage extends React.Component {
     console.log(this.state.formData);
   };
 
-  getTop = async () => {
-    let getClothesToShow = await rest.getClothesToShow();
-    let cat = await rest.category();
-
-    const formData = {
-      category: cat.data
-    };
-  };
 
   getCloth = async id => {
-    this.setState({id})
+    this.setState({ id , loading:true })
     let resp = await rest.getClothByBrandAndCat({
       clotheBrand: await localStorage.getItem('id'),
       //clotheBrand: "1",
       categoryId: id
     });
-    this.setState({ clothes: resp.data });
+    this.setState({ clothes: resp.data ,loading:false });
   };
 
   confirm = async id => {
     let resp = await rest.deleteCloth({
-      userId:"",
+      userId: "",
       id: id
     });
-    this.getCloth(this.state.id)
+    this.getCloth(8)
   };
 
 
@@ -131,21 +126,24 @@ class Manage extends React.Component {
             openKeys={this.state.openKeys}
             onOpenChange={this.onOpenChange}
             style={{ width: 256, minHeight: "120vh", position: "fixed" }}
+            defaultSelectedKeys={['1']}
+
           >
             <div className="logo">
               <img src={logo2} className="Logo" />
             </div>
 
+
             {this.state.formData !== null ? (
               <DrawerCreate formData={this.state.formData} />
             ) : (
-              <div></div>
-            )}
+                <div></div>
+              )}
             <Menu.Item key="1" onClick={e => this.getCloth(8)}>
               Top
             </Menu.Item>
             <Menu.Item key="2" onClick={e => this.getCloth(5)}>
-            Bottom
+              Bottom
             </Menu.Item>
             <Menu.Item key="3" onClick={e => this.getCloth(7)}>
               Jacket
@@ -156,7 +154,7 @@ class Manage extends React.Component {
 
             <Menu.Item>
               <div className="logout"><Link to='/'><Icon type="logout" />
-              Logout</Link></div>
+                Logout</Link></div>
             </Menu.Item>
           </Menu>
         </div>
@@ -164,24 +162,31 @@ class Manage extends React.Component {
           <Content>
             <div
               style={{
-                paddingLeft: 90,
+                paddingLeft: 50,
                 background: "#fff",
                 minHeight: 360,
                 minHeight: "120vh",
-                display:'flex',
-                flexWrap:'wrap',
-                paddingTop:20
-                
+                display: 'flex',
+                flexWrap: 'wrap',
+                paddingTop: 20
+
               }}
             >
-                {this.state.clothes == null ? (
-                  <div></div>
-                ) : (
+              <div className='loader'>
+                <BarLoader
+                  size={150}
+                  color={'#000'}
+                  loading={this.state.loading}
+                />
+              </div>
+              {this.state.clothes == null ? (
+                <div></div>
+              ) : (
                   this.state.clothes.map((data, key) => (
-                    
+
                     <Card
                       key={key}
-                      style={{width:300 , height: 445, margin:20}}
+                      style={{ width: 300, height: 445, margin: 20 }}
                       cover={
                         <img
                           className="img-box"
@@ -190,15 +195,15 @@ class Manage extends React.Component {
                         />
                       }
                       actions={[
-                        <DrawerInfo data={data}/>,
+                        <DrawerInfo data={data} />,
                         this.state.formData === null ? (
                           <div></div>
                         ) : (
-                          <DrawerEdit
-                            formData={this.state.formData}
-                            data={data}
-                          />
-                        ),
+                            <DrawerEdit
+                              formData={this.state.formData}
+                              data={data}
+                            />
+                          ),
                         <Popconfirm
                           title="Are you sure？"
                           okText="Yes"
@@ -215,10 +220,10 @@ class Manage extends React.Component {
                         description={data.clotheDrescription}
                       />
                     </Card>
-                 
+
                   ))
                 )}
-              
+
             </div>
           </Content>
         </Layout>

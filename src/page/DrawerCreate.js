@@ -200,7 +200,7 @@ class DrawerCreate extends React.Component {
     return (
       <div>
         <button className="AddClothes" onClick={this.showDrawer}>
-          <div className="fontStyle">+ ADD CLOTHES</div>
+          <div className="fontStyleAddClothes">+ ADD CLOTHES</div>
         </button>
         <Drawer
           width={640}

@@ -126,3 +126,19 @@ ant-menu-item-active {
   background-color: black;
   border: black;
 }
+
+.loader{
+  display: flex;
+  margin-top: 200px;
+  margin-left: 400px;
+}
+
+.fontStyleAddClothes{
+  color: #fff;
+  font-size: 14px;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+  font-weight: lighter;
+  padding-top: 10px ;
+}
