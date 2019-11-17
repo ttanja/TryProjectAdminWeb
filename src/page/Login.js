@@ -22,6 +22,7 @@ class LoginPage extends React.Component {
     const fail = response => {
       console.log('fail')
       console.log(response)
+      console.log(this.state.user)
     }
 
     const success = response => {

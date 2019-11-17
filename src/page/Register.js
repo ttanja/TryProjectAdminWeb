@@ -2,6 +2,8 @@ import React from 'react';
 import { Button } from 'antd';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import '../Style/Login.css'
+import loginBg from '../picture/bglogin-new.png';
 
 
 class Register extends React.Component {
@@ -33,11 +35,14 @@ class Register extends React.Component {
     render() {
         
         return (
-            <div>
-                <p>Input the brand name: <input type='text' onChange={this.handleChange.bind(this)}/></p>
-                <Link to="/manage"><Button onClick={() => this.createBrand()}> Press Me !</Button></Link>
+            <div img src={loginBg} className="loginBg" >
+            <div style={{marginTop:300}}>
+                <div style={{color: "#d5d5d5",marginRight:10,fontSize:"20"}} >INPUT THE BRAND NAME :  <input type='text' onChange={this.handleChange.bind(this)}/></div>
+                <Link to="/"><Button style={{marginTop: 10,marginLeft:100}} onClick={() => this.createBrand()}> PRESS ME !</Button></Link>
                 <p>{this.state.brandName}</p>
             </div>
+            </div>
+            
 
         );
     }

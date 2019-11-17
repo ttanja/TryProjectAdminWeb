@@ -22,7 +22,8 @@ import RestService from "../service/rest.service";
 import { realpath } from "fs";
 import axios from "axios";
 import { Link } from 'react-router-dom';
-import { BarLoader} from 'react-spinners';
+import { BarLoader } from 'react-spinners';
+import Column from "antd/lib/table/Column";
 
 const { Content, Sider, Header } = Layout;
 const { SubMenu } = Menu;
@@ -97,13 +98,13 @@ class Manage extends React.Component {
 
 
   getCloth = async id => {
-    this.setState({ id , loading:true })
+    this.setState({ id, loading: true ,})
     let resp = await rest.getClothByBrandAndCat({
       clotheBrand: await localStorage.getItem('id'),
       //clotheBrand: "1",
       categoryId: id
     });
-    this.setState({ clothes: resp.data ,loading:false });
+    this.setState({ clothes: resp.data, loading: false });
   };
 
   confirm = async id => {
@@ -111,7 +112,8 @@ class Manage extends React.Component {
       userId: "",
       id: id
     });
-    this.getCloth(8)
+    
+
   };
 
 
@@ -166,8 +168,8 @@ class Manage extends React.Component {
                 background: "#fff",
                 minHeight: 360,
                 minHeight: "120vh",
-                display: 'flex',
-                flexWrap: 'wrap',
+                // display: 'flex',
+                // flexWrap: 'wrap',
                 paddingTop: 20
 
               }}
@@ -179,50 +181,58 @@ class Manage extends React.Component {
                   loading={this.state.loading}
                 />
               </div>
-              {this.state.clothes == null ? (
-                <div></div>
-              ) : (
-                  this.state.clothes.map((data, key) => (
+              <div className='testcard'
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  position: 'absolute'
+                }}>
+                {this.state.clothes == null ? (
+                  <div></div>
+                ) : (
+                    this.state.clothes.map((data, key) => (
 
-                    <Card
-                      key={key}
-                      style={{ width: 300, height: 445, margin: 20 }}
-                      cover={
-                        <img
-                          className="img-box"
-                          alt="test"
-                          src={data.clothePictureUrl}
+                      <Card
+                        key={key}
+                        style={{ width: 300, height: 445, margin: 20 }}
+                        cover={
+                          <img
+                            className="img-box"
+                            alt="test"
+                            src={data.clothePictureUrl}
+                          />
+                        }
+                        actions={[
+                          <DrawerInfo data={data} />,
+                          this.state.formData === null ? (
+                            <div></div>
+                          ) : (
+                              <DrawerEdit
+                                formData={this.state.formData}
+                                data={data}
+                              />
+                            ),
+                          <Popconfirm
+                            title="Are you sure？"
+                            okText="Yes"
+                            onConfirm={e => this.confirm(data.id)}
+                            cancelText="No"
+                          >
+                            <Icon type="delete" key="ellipsis" />
+                          </Popconfirm>
+                        ]}
+                        hoverable={true}
+                      >
+                        <Meta
+                          title={data.clotheName}
+                          description={data.clotheDrescription}
                         />
-                      }
-                      actions={[
-                        <DrawerInfo data={data} />,
-                        this.state.formData === null ? (
-                          <div></div>
-                        ) : (
-                            <DrawerEdit
-                              formData={this.state.formData}
-                              data={data}
-                            />
-                          ),
-                        <Popconfirm
-                          title="Are you sure？"
-                          okText="Yes"
-                          onConfirm={e => this.confirm(data.id)}
-                          cancelText="No"
-                        >
-                          <Icon type="delete" key="ellipsis" />
-                        </Popconfirm>
-                      ]}
-                      hoverable={true}
-                    >
-                      <Meta
-                        title={data.clotheName}
-                        description={data.clotheDrescription}
-                      />
-                    </Card>
+                      </Card>
 
-                  ))
-                )}
+                    ))
+                  )}
+              </div>
+
 
             </div>
           </Content>
